@@ -21,13 +21,34 @@ export async function createNewSchedulerCard(): Promise<FSRSCardType> {
     return scheduler.newCard();
 }
 
+/**
+ * FSRS-7 Dual Memory State Sanitization:
+ *
+ * In FSRS-7, the memory model tracks dual stabilities:
+ *  - `stability`: Standard long-term memory stability.
+ *  - `stabilityFast`: Short-term fast-decay stability (for same-day/short intervals).
+ *
+ * In ts-fsrs, the FSRS-7 scheduler enforces strict validation:
+ *  1. Unreviewed cards must have: stability === 0 && stabilityFast === 0 && difficulty === 0
+ *  2. Reviewed cards must have: stability > 0 && stabilityFast > 0
+ *     (otherwise throwing `FSRSValidationError: Invalid FSRS7 memory state: both stabilities must be positive`).
+ *
+ * Significance of `0.8`:
+ * In the official FSRS-7 specification in ts-fsrs (`models/fsrs-7.ts`), initial stabilityFast
+ * is calculated as: `stabilityFast = roundTo(stability * 0.8, 8)`.
+ * When cards saved under earlier schemas (FSRS-4/5/6) exist in localStorage without `stabilityFast`,
+ * this ratio accurately migrates their memory state without corrupting scheduling intervals.
+ */
 function sanitizeMemoryState(card: FSRSCardType): FSRSCardType {
+    // Legacy migration: card was reviewed under an older schema, but lacks stabilityFast
     if (card.stability > 0 && card.stabilityFast <= 0) {
         return {
             ...card,
             stabilityFast: Number((card.stability * 0.8).toFixed(8))
         };
     }
+
+    // New/unreviewed card: ensure all 3 memory state fields are strictly 0
     if (card.stability <= 0 || card.stabilityFast <= 0) {
         return {
             ...card,
@@ -36,6 +57,7 @@ function sanitizeMemoryState(card: FSRSCardType): FSRSCardType {
             difficulty: 0
         };
     }
+
     return card;
 }
 
