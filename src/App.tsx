@@ -90,7 +90,7 @@ export default function App() {
     if (loading) {
         return (
             <Center style={{ height: '100vh', flexDirection: 'column', gap: 16 }}>
-                <Loader color="orange" size="lg" />
+                <Loader color="ice" size="lg" />
                 <Text size="sm" c="dimmed">
                     Initializing LeetCode Recall & FSRS Scheduler...
                 </Text>

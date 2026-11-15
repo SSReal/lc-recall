@@ -8,7 +8,8 @@ import {
     Badge,
     Box,
     Progress,
-    Stack
+    Stack,
+    useMantineColorScheme
 } from '@mantine/core';
 import type { Flashcard } from '../../types/flashcard';
 
@@ -17,6 +18,8 @@ interface StatsViewProps {
 }
 
 export function StatsView({ cards }: StatsViewProps) {
+    const { colorScheme } = useMantineColorScheme();
+    const isDark = colorScheme === 'dark';
     const [now] = useState(() => Date.now());
 
     const stats = useMemo(() => {
@@ -72,15 +75,20 @@ export function StatsView({ cards }: StatsViewProps) {
         ? Math.round((stats.reviewCount / stats.total) * 100)
         : 0;
 
+    const paperStyle = {
+        background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
+        borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+    };
+
     return (
         <Box style={{ maxWidth: 900, margin: '24px auto' }}>
-            <Title order={2} mb="lg">
+            <Title order={2} mb="lg" style={{ fontWeight: 700 }}>
                 FSRS Memory & Progress Analytics
             </Title>
 
             {/* Overview Stats */}
             <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md" mb="lg">
-                <Paper p="md" radius="md" withBorder>
+                <Paper p="md" radius="lg" withBorder style={paperStyle}>
                     <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
                         Total Cards
                     </Text>
@@ -92,7 +100,7 @@ export function StatsView({ cards }: StatsViewProps) {
                     </Text>
                 </Paper>
 
-                <Paper p="md" radius="md" withBorder>
+                <Paper p="md" radius="lg" withBorder style={paperStyle}>
                     <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
                         Due Today
                     </Text>
@@ -104,11 +112,11 @@ export function StatsView({ cards }: StatsViewProps) {
                     </Text>
                 </Paper>
 
-                <Paper p="md" radius="md" withBorder>
+                <Paper p="md" radius="lg" withBorder style={paperStyle}>
                     <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
                         Total Reviews
                     </Text>
-                    <Title order={2} mt={4} c="orange">
+                    <Title order={2} mt={4} c="#a9cef4">
                         {stats.totalReps}
                     </Title>
                     <Text size="xs" c="dimmed" mt={4}>
@@ -116,7 +124,7 @@ export function StatsView({ cards }: StatsViewProps) {
                     </Text>
                 </Paper>
 
-                <Paper p="md" radius="md" withBorder>
+                <Paper p="md" radius="lg" withBorder style={paperStyle}>
                     <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
                         Avg Memory Stability
                     </Text>
@@ -131,7 +139,7 @@ export function StatsView({ cards }: StatsViewProps) {
 
             {/* Memory Stage & Difficulty Breakdown */}
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" mb="lg">
-                <Paper p="lg" radius="md" withBorder>
+                <Paper p="lg" radius="lg" withBorder style={paperStyle}>
                     <Title order={4} mb="md">
                         Learning Progression
                     </Title>
@@ -152,7 +160,7 @@ export function StatsView({ cards }: StatsViewProps) {
 
                         <Group justify="space-between">
                             <Group gap="xs">
-                                <Badge size="xs" color="orange" circle />
+                                <Badge size="xs" color="ice" circle />
                                 <Text size="sm">Learning (1-2 reviews)</Text>
                             </Group>
                             <Text size="sm" fw={600}>{stats.learningCount}</Text>
@@ -168,7 +176,7 @@ export function StatsView({ cards }: StatsViewProps) {
                     </Stack>
                 </Paper>
 
-                <Paper p="lg" radius="md" withBorder>
+                <Paper p="lg" radius="lg" withBorder style={paperStyle}>
                     <Title order={4} mb="md">
                         Difficulty Breakdown
                     </Title>
@@ -187,24 +195,24 @@ export function StatsView({ cards }: StatsViewProps) {
 
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c="orange" fw={600}>Medium</Text>
+                                <Text size="sm" c="#a9cef4" fw={600}>Medium</Text>
                                 <Text size="sm">{stats.difficultyCount.Medium}</Text>
                             </Group>
                             <Progress
                                 value={stats.total ? (stats.difficultyCount.Medium / stats.total) * 100 : 0}
-                                color="orange"
+                                color="ice"
                                 size="sm"
                             />
                         </div>
 
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c="red" fw={600}>Hard</Text>
+                                <Text size="sm" c="rose" fw={600}>Hard</Text>
                                 <Text size="sm">{stats.difficultyCount.Hard}</Text>
                             </Group>
                             <Progress
                                 value={stats.total ? (stats.difficultyCount.Hard / stats.total) * 100 : 0}
-                                color="red"
+                                color="rose"
                                 size="sm"
                             />
                         </div>
@@ -214,7 +222,7 @@ export function StatsView({ cards }: StatsViewProps) {
 
             {/* Top Topics / Patterns */}
             {stats.topTags.length > 0 && (
-                <Paper p="lg" radius="md" withBorder>
+                <Paper p="lg" radius="lg" withBorder style={paperStyle}>
                     <Title order={4} mb="md">
                         Top Algorithm Patterns & Tags
                     </Title>
@@ -224,7 +232,7 @@ export function StatsView({ cards }: StatsViewProps) {
                                 key={tag}
                                 size="lg"
                                 variant="light"
-                                color="orange"
+                                color="ice"
                                 style={{ textTransform: 'none' }}
                             >
                                 {tag} ({count})
