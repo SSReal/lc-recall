@@ -3,6 +3,20 @@ import { createStarterCards } from "./starterCards";
 
 const STORAGE_KEY = "flashcards";
 
+// Default FSRS-7 card fields used to populate initial values or fill missing properties on legacy stored cards
+const DEFAULT_FSRS_CARD: Omit<CardType, "dueAt" | "lastReviewAt"> = {
+    cardId: "",
+    stability: 0,
+    stabilityFast: 0,
+    difficulty: 0,
+    state: 0,
+    scheduleStatus: "new",
+    reps: 0,
+    lapses: 0,
+    scheduledDays: 0,
+    learningStep: 0
+};
+
 export function convertToFSRSCard(cardData: CardType): FSRSCard {
     return {
         ...cardData,
@@ -14,11 +28,25 @@ export function convertToFSRSCard(cardData: CardType): FSRSCard {
 }
 
 export function convertToDefaultSchedulerCard(fsrsCard: FSRSCard): CardType {
-    return {
+    const rawCard: CardType = {
+        ...DEFAULT_FSRS_CARD,
         ...fsrsCard,
+        cardId: fsrsCard.cardId || crypto.randomUUID(),
         dueAt: new Date(fsrsCard.dueAt),
         lastReviewAt: fsrsCard.lastReviewAt ? new Date(fsrsCard.lastReviewAt) : null
-    } as CardType;
+    };
+
+    // FSRS-7 consistency: if stability > 0, stabilityFast must be positive (proportional ~0.8 * stability).
+    // If either is <= 0, reset memory state fields to 0 (clean new card state).
+    if (rawCard.stability > 0 && rawCard.stabilityFast <= 0) {
+        rawCard.stabilityFast = Number((rawCard.stability * 0.8).toFixed(8));
+    } else if (rawCard.stability <= 0 || rawCard.stabilityFast <= 0) {
+        rawCard.stability = 0;
+        rawCard.stabilityFast = 0;
+        rawCard.difficulty = 0;
+    }
+
+    return rawCard;
 }
 
 export function saveFlashcards(flashcards: Flashcard[]): void {

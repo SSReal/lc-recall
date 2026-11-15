@@ -2,7 +2,6 @@ import { DefaultScheduler, Rating } from "ts-fsrs";
 import type { DefaultSchedulerCard, DefaultSchedulerCardInput, Grade } from "ts-fsrs";
 
 export { Rating };
-export type { Grade };
 
 export type FSRSCardType = DefaultSchedulerCard<'FSRS-7'>;
 export type FSRSCardInputType = DefaultSchedulerCardInput<'FSRS-7'>;
@@ -22,21 +21,52 @@ export async function createNewSchedulerCard(): Promise<FSRSCardType> {
     return scheduler.newCard();
 }
 
+/**
+ * FSRS-7 Dual Memory State Sanitization:
+ *
+ * In FSRS-7, the memory model tracks dual stabilities:
+ *  - `stability`: Standard long-term memory stability.
+ *  - `stabilityFast`: Short-term fast-decay stability (for same-day/short intervals).
+ *
+ * In ts-fsrs, the FSRS-7 scheduler enforces strict validation:
+ *  1. Unreviewed cards must have: stability === 0 && stabilityFast === 0 && difficulty === 0
+ *  2. Reviewed cards must have: stability > 0 && stabilityFast > 0
+ *     (otherwise throwing `FSRSValidationError: Invalid FSRS7 memory state: both stabilities must be positive`).
+ *
+ * Significance of `0.8`:
+ * In the official FSRS-7 specification in ts-fsrs (`models/fsrs-7.ts`), initial stabilityFast
+ * is calculated as: `stabilityFast = roundTo(stability * 0.8, 8)`.
+ * When cards saved under earlier schemas (FSRS-4/5/6) exist in localStorage without `stabilityFast`,
+ * this ratio accurately migrates their memory state without corrupting scheduling intervals.
+ */
+function sanitizeMemoryState(card: FSRSCardType): FSRSCardType {
+    // Legacy migration: card was reviewed under an older schema, but lacks stabilityFast
+    if (card.stability > 0 && card.stabilityFast <= 0) {
+        return {
+            ...card,
+            stabilityFast: Number((card.stability * 0.8).toFixed(8))
+        };
+    }
+
+    // New/unreviewed card: ensure all 3 memory state fields are strictly 0
+    if (card.stability <= 0 || card.stabilityFast <= 0) {
+        return {
+            ...card,
+            stability: 0,
+            stabilityFast: 0,
+            difficulty: 0
+        };
+    }
+
+    return card;
+}
+
 export async function reviewFSRSCard(
     card: FSRSCardType,
     grade: Grade
 ): Promise<FSRSCardType> {
     const scheduler = await getScheduler();
-    const normalizedCard: FSRSCardInputType = {
-        ...card,
-        stabilityFast: card.stabilityFast ?? 0,
-        dueAt: card.dueAt instanceof Date ? card.dueAt : new Date(card.dueAt),
-        lastReviewAt: card.lastReviewAt
-            ? (card.lastReviewAt instanceof Date ? card.lastReviewAt : new Date(card.lastReviewAt))
-            : null
-    };
-
-    const result = scheduler.review({ card: normalizedCard, grade });
+    const result = scheduler.review({ card: sanitizeMemoryState(card), grade });
     return result.card;
 }
 
@@ -65,30 +95,22 @@ export async function getNextIntervalEstimates(
     baseDate: Date = new Date()
 ): Promise<Record<Grade, string>> {
     const scheduler = await getScheduler();
-    const normalizedCard: FSRSCardInputType = {
-        ...card,
-        stabilityFast: card.stabilityFast ?? 0,
-        dueAt: card.dueAt instanceof Date ? card.dueAt : new Date(card.dueAt),
-        lastReviewAt: card.lastReviewAt
-            ? (card.lastReviewAt instanceof Date ? card.lastReviewAt : new Date(card.lastReviewAt))
-            : null
-    };
-
     const estimates: Record<Grade, string> = {
-        1: '',
-        2: '',
-        3: '',
-        4: ''
+        1: '<1m',
+        2: '~12h',
+        3: '~3d',
+        4: '~1w'
     };
 
+    const sanitized = sanitizeMemoryState(card);
     const reviewGrades: Grade[] = [1, 2, 3, 4];
 
     for (const g of reviewGrades) {
         try {
-            const preview = scheduler.review({ card: normalizedCard, grade: g });
+            const preview = scheduler.review({ card: sanitized, grade: g });
             estimates[g] = formatInterval(preview.card.dueAt, baseDate);
         } catch {
-            estimates[g] = '';
+            // Keep default fallback
         }
     }
 
