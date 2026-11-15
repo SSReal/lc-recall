@@ -118,7 +118,12 @@ export function ImportExportModal({
                         onChange={(e) => setJsonInput(e.currentTarget.value)}
                         mb="sm"
                     />
-                    <Button color="orange" onClick={handleImport} fullWidth disabled={!jsonInput.trim()}>
+                    <Button
+                        onClick={handleImport}
+                        fullWidth
+                        disabled={!jsonInput.trim()}
+                        style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                    >
                         Import Flashcards
                     </Button>
                 </div>
@@ -126,13 +131,13 @@ export function ImportExportModal({
                 <Divider my="xs" />
 
                 <div>
-                    <Text fw={600} size="sm" mb={4} c="red">
+                    <Text fw={600} size="sm" mb={4} c="rose">
                         Reset Deck
                     </Text>
                     <Text size="xs" c="dimmed" mb="sm">
                         Restore the default curated LeetCode Blind 75 starter deck.
                     </Text>
-                    <Button variant="outline" color="red" onClick={handleResetDefault} fullWidth>
+                    <Button variant="outline" color="rose" onClick={handleResetDefault} fullWidth>
                         Reset to Starter Deck
                     </Button>
                 </div>

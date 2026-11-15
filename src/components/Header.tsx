@@ -20,13 +20,24 @@ export function Header({
     const { colorScheme, setColorScheme } = useMantineColorScheme();
     const isDark = colorScheme === 'dark';
 
+    const getNavStyle = (tab: 'review' | 'cards' | 'stats') => {
+        const isActive = activeTab === tab;
+        return {
+            background: isActive ? (isDark ? 'rgba(169, 206, 244, 0.14)' : '#e0effb') : 'transparent',
+            color: isActive ? (isDark ? '#a9cef4' : '#2b587a') : (isDark ? '#7ea0b7' : '#597081'),
+            fontWeight: isActive ? 600 : 500,
+            border: isActive ? (isDark ? '1px solid rgba(169, 206, 244, 0.32)' : '1px solid #c7e2f8') : '1px solid transparent'
+        };
+    };
+
     return (
         <Box
             component="header"
             style={{
-                borderBottom: '1px solid var(--mantine-color-default-border)',
+                borderBottom: isDark ? '1px solid #1a2932' : '1px solid var(--mantine-color-default-border)',
                 padding: '12px 24px',
-                background: isDark ? 'var(--mantine-color-dark-7)' : 'white',
+                background: isDark ? 'rgba(7, 19, 20, 0.9)' : 'rgba(255, 255, 255, 0.92)',
+                backdropFilter: 'blur(16px)',
                 position: 'sticky',
                 top: 0,
                 zIndex: 100
@@ -36,31 +47,30 @@ export function Header({
                 <Group gap="sm" align="center">
                     <Box
                         style={{
-                            width: 38,
-                            height: 38,
-                            borderRadius: 10,
-                            background: 'linear-gradient(135deg, #FFA116 0%, #FF6B00 100%)',
+                            width: 36,
+                            height: 36,
+                            borderRadius: 8,
+                            background: '#a9cef4',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: 'white',
+                            color: '#040f0f',
                             fontWeight: 800,
-                            fontSize: 18,
-                            boxShadow: '0 2px 8px rgba(255, 107, 0, 0.3)'
+                            fontSize: 15
                         }}
                     >
                         LC
                     </Box>
                     <div>
                         <Group gap="xs" align="center">
-                            <Title order={3} style={{ letterSpacing: '-0.5px', margin: 0 }}>
+                            <Title order={3} style={{ letterSpacing: '-0.5px', margin: 0, fontSize: 18 }}>
                                 LC Recall
                             </Title>
-                            <Badge size="xs" variant="light" color="orange">
+                            <Badge size="xs" variant="light" color="ice">
                                 FSRS v7
                             </Badge>
                         </Group>
-                        <span style={{ fontSize: 12, color: 'var(--mantine-color-dimmed)' }}>
+                        <span style={{ fontSize: 12, color: isDark ? '#7ea0b7' : 'var(--mantine-color-dimmed)' }}>
                             Active Spaced Repetition for LeetCode
                         </span>
                     </div>
@@ -68,13 +78,13 @@ export function Header({
 
                 <Group gap="xs">
                     <Button
-                        variant={activeTab === 'review' ? 'filled' : 'subtle'}
-                        color="orange"
+                        variant="subtle"
                         size="sm"
+                        style={getNavStyle('review')}
                         onClick={() => onTabChange('review')}
                         rightSection={
                             dueCount > 0 ? (
-                                <Badge size="sm" color="red" circle variant="filled">
+                                <Badge size="sm" color="rose" circle variant="filled">
                                     {dueCount}
                                 </Badge>
                             ) : undefined
@@ -84,12 +94,12 @@ export function Header({
                     </Button>
 
                     <Button
-                        variant={activeTab === 'cards' ? 'filled' : 'subtle'}
-                        color="gray"
+                        variant="subtle"
                         size="sm"
+                        style={getNavStyle('cards')}
                         onClick={() => onTabChange('cards')}
                         rightSection={
-                            <Badge size="sm" variant="light" color="gray">
+                            <Badge size="sm" variant="light" color="ice">
                                 {totalCount}
                             </Badge>
                         }
@@ -98,9 +108,9 @@ export function Header({
                     </Button>
 
                     <Button
-                        variant={activeTab === 'stats' ? 'filled' : 'subtle'}
-                        color="gray"
+                        variant="subtle"
                         size="sm"
+                        style={getNavStyle('stats')}
                         onClick={() => onTabChange('stats')}
                     >
                         Analytics
@@ -109,10 +119,15 @@ export function Header({
 
                 <Group gap="xs">
                     <Button
-                        variant="gradient"
-                        gradient={{ from: 'orange', to: 'yellow', deg: 90 }}
+                        variant="filled"
                         size="sm"
                         onClick={onAddCard}
+                        style={{
+                            background: '#a9cef4',
+                            color: '#040f0f',
+                            fontWeight: 600,
+                            border: 'none'
+                        }}
                     >
                         + Add Card
                     </Button>
@@ -124,6 +139,11 @@ export function Header({
                             radius="md"
                             onClick={onOpenSettings}
                             aria-label="Settings"
+                            style={{
+                                background: isDark ? '#0d191a' : undefined,
+                                borderColor: isDark ? '#1e2f38' : undefined,
+                                color: isDark ? '#a9cef4' : undefined
+                            }}
                         >
                             ⚙️
                         </ActionIcon>
@@ -136,6 +156,11 @@ export function Header({
                             radius="md"
                             onClick={() => setColorScheme(isDark ? 'light' : 'dark')}
                             aria-label="Toggle color scheme"
+                            style={{
+                                background: isDark ? '#0d191a' : undefined,
+                                borderColor: isDark ? '#1e2f38' : undefined,
+                                color: isDark ? '#a9cef4' : undefined
+                            }}
                         >
                             {isDark ? '☀️' : '🌙'}
                         </ActionIcon>
