@@ -2,7 +2,6 @@ import { DefaultScheduler, Rating } from "ts-fsrs";
 import type { DefaultSchedulerCard, DefaultSchedulerCardInput, Grade } from "ts-fsrs";
 
 export { Rating };
-export type { Grade };
 
 export type FSRSCardType = DefaultSchedulerCard<'FSRS-7'>;
 export type FSRSCardInputType = DefaultSchedulerCardInput<'FSRS-7'>;
@@ -22,21 +21,30 @@ export async function createNewSchedulerCard(): Promise<FSRSCardType> {
     return scheduler.newCard();
 }
 
+function sanitizeMemoryState(card: FSRSCardType): FSRSCardType {
+    if (card.stability > 0 && card.stabilityFast <= 0) {
+        return {
+            ...card,
+            stabilityFast: Number((card.stability * 0.8).toFixed(8))
+        };
+    }
+    if (card.stability <= 0 || card.stabilityFast <= 0) {
+        return {
+            ...card,
+            stability: 0,
+            stabilityFast: 0,
+            difficulty: 0
+        };
+    }
+    return card;
+}
+
 export async function reviewFSRSCard(
     card: FSRSCardType,
     grade: Grade
 ): Promise<FSRSCardType> {
     const scheduler = await getScheduler();
-    const normalizedCard: FSRSCardInputType = {
-        ...card,
-        stabilityFast: card.stabilityFast ?? 0,
-        dueAt: card.dueAt instanceof Date ? card.dueAt : new Date(card.dueAt),
-        lastReviewAt: card.lastReviewAt
-            ? (card.lastReviewAt instanceof Date ? card.lastReviewAt : new Date(card.lastReviewAt))
-            : null
-    };
-
-    const result = scheduler.review({ card: normalizedCard, grade });
+    const result = scheduler.review({ card: sanitizeMemoryState(card), grade });
     return result.card;
 }
 
@@ -65,30 +73,22 @@ export async function getNextIntervalEstimates(
     baseDate: Date = new Date()
 ): Promise<Record<Grade, string>> {
     const scheduler = await getScheduler();
-    const normalizedCard: FSRSCardInputType = {
-        ...card,
-        stabilityFast: card.stabilityFast ?? 0,
-        dueAt: card.dueAt instanceof Date ? card.dueAt : new Date(card.dueAt),
-        lastReviewAt: card.lastReviewAt
-            ? (card.lastReviewAt instanceof Date ? card.lastReviewAt : new Date(card.lastReviewAt))
-            : null
-    };
-
     const estimates: Record<Grade, string> = {
-        1: '',
-        2: '',
-        3: '',
-        4: ''
+        1: '<1m',
+        2: '~12h',
+        3: '~3d',
+        4: '~1w'
     };
 
+    const sanitized = sanitizeMemoryState(card);
     const reviewGrades: Grade[] = [1, 2, 3, 4];
 
     for (const g of reviewGrades) {
         try {
-            const preview = scheduler.review({ card: normalizedCard, grade: g });
+            const preview = scheduler.review({ card: sanitized, grade: g });
             estimates[g] = formatInterval(preview.card.dueAt, baseDate);
         } catch {
-            estimates[g] = '';
+            // Keep default fallback
         }
     }
 

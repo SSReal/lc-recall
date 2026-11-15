@@ -1,4 +1,4 @@
-import type { DefaultSchedulerCard, Grade } from "ts-fsrs";
+import type { DefaultSchedulerCard } from "ts-fsrs";
 
 export type ProblemDifficulty = 'Easy' | 'Medium' | 'Hard';
 
@@ -23,5 +23,3 @@ export type FSRSCard = Omit<CardType, "dueAt" | "lastReviewAt"> & {
     dueAt: number;
     lastReviewAt: number | null;
 };
-
-export type { Grade, DefaultSchedulerCard };

@@ -16,7 +16,7 @@ import {
 } from '@mantine/core';
 import type { Flashcard } from '../../types/flashcard';
 import { Rating, reviewFSRSCard, getNextIntervalEstimates } from '../../lib/fsrs';
-import type { Grade } from '../../lib/fsrs';
+import type { Grade } from 'ts-fsrs';
 
 interface ReviewSessionProps {
     allCards: Flashcard[];
@@ -65,22 +65,26 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
     const handleRating = useCallback(async (grade: Grade) => {
         if (!currentCard) return;
 
-        const updatedFsrs = await reviewFSRSCard(currentCard.fsrs, grade);
-        const updatedCard: Flashcard = {
-            ...currentCard,
-            fsrs: updatedFsrs
-        };
+        try {
+            const updatedFsrs = await reviewFSRSCard(currentCard.fsrs, grade);
+            const updatedCard: Flashcard = {
+                ...currentCard,
+                fsrs: updatedFsrs
+            };
 
-        onUpdateCard(updatedCard);
-        setReviewedCount(prev => prev + 1);
+            onUpdateCard(updatedCard);
+            setReviewedCount(prev => prev + 1);
 
-        // If 'Again', re-insert at end of queue for practice
-        if (grade === Rating.Again) {
-            setQueue(prev => [...prev, updatedCard]);
+            // If 'Again', re-insert at end of queue for practice
+            if (grade === Rating.Again) {
+                setQueue(prev => [...prev, updatedCard]);
+            }
+        } catch (err) {
+            console.error("Error rating flashcard:", err);
+        } finally {
+            setRevealedCardId(null);
+            setCurrentIndex(prev => prev + 1);
         }
-
-        setRevealedCardId(null);
-        setCurrentIndex(prev => prev + 1);
     }, [currentCard, onUpdateCard]);
 
     // Keyboard shortcuts
