@@ -12,7 +12,8 @@ import {
     Box,
     Anchor,
     Tooltip,
-    Pagination
+    Pagination,
+    useMantineColorScheme
 } from '@mantine/core';
 import type { Flashcard, ProblemDifficulty } from '../../types/flashcard';
 import { formatInterval } from '../../lib/fsrs';
@@ -25,6 +26,8 @@ interface CardListProps {
 }
 
 export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardListProps) {
+    const { colorScheme } = useMantineColorScheme();
+    const isDark = colorScheme === 'dark';
     const [search, setSearch] = useState('');
     const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -75,8 +78,8 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
     const getDifficultyColor = (diff?: ProblemDifficulty) => {
         switch (diff) {
             case 'Easy': return 'teal';
-            case 'Medium': return 'orange';
-            case 'Hard': return 'red';
+            case 'Medium': return 'ice';
+            case 'Hard': return 'rose';
             default: return 'gray';
         }
     };
@@ -87,13 +90,25 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                 <Text size="xl" fw={700}>
                     Problem Deck ({cards.length})
                 </Text>
-                <Button color="orange" onClick={onAddCard}>
+                <Button
+                    onClick={onAddCard}
+                    style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                >
                     + Add Flashcard
                 </Button>
             </Group>
 
             {/* Filter Bar */}
-            <Paper p="md" radius="md" withBorder mb="lg">
+            <Paper
+                p="md"
+                radius="lg"
+                withBorder
+                mb="lg"
+                style={{
+                    background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
+                    borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+                }}
+            >
                 <Group gap="sm" wrap="wrap">
                     <TextInput
                         placeholder="Search by title, question or tag..."
@@ -158,11 +173,28 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
 
             {/* Cards Table */}
             {filteredCards.length === 0 ? (
-                <Paper p="xl" radius="md" withBorder ta="center">
+                <Paper
+                    p="xl"
+                    radius="lg"
+                    withBorder
+                    ta="center"
+                    style={{
+                        background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
+                        borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+                    }}
+                >
                     <Text c="dimmed">No flashcards found matching your filters.</Text>
                 </Paper>
             ) : (
-                <Paper radius="md" withBorder style={{ overflowX: 'auto' }}>
+                <Paper
+                    radius="lg"
+                    withBorder
+                    style={{
+                        overflowX: 'auto',
+                        background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
+                        borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+                    }}
+                >
                     <Table highlightOnHover verticalSpacing="sm">
                         <Table.Thead>
                             <Table.Tr>
@@ -234,11 +266,11 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
 
                                         <Table.Td>
                                             {isDue ? (
-                                                <Badge size="sm" color="red" variant="filled">
+                                                <Badge size="sm" color="rose" variant="filled">
                                                     Due Now
                                                 </Badge>
                                             ) : (
-                                                <Badge size="sm" color="blue" variant="light">
+                                                <Badge size="sm" color="ice" variant="light">
                                                     in {formatInterval(dueAt)}
                                                 </Badge>
                                             )}
@@ -284,7 +316,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
 
             {totalPages > 1 && (
                 <Group justify="center" mt="lg">
-                    <Pagination total={totalPages} value={page} onChange={setPage} color="orange" />
+                    <Pagination total={totalPages} value={page} onChange={setPage} color="ice" />
                 </Group>
             )}
         </Box>

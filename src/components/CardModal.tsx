@@ -90,7 +90,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                                 { label: 'Hard', value: 'Hard' }
                             ]}
                             color={
-                                difficulty === 'Easy' ? 'teal' : difficulty === 'Medium' ? 'orange' : 'red'
+                                difficulty === 'Easy' ? 'teal' : difficulty === 'Medium' ? 'ice' : 'rose'
                             }
                         />
                     </div>
@@ -166,10 +166,10 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                     Cancel
                 </Button>
                 <Button
-                    color="orange"
                     onClick={handleSave}
                     loading={isSaving}
                     disabled={!question.trim() || !answer.trim()}
+                    style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
                 >
                     {initialCard ? 'Save Changes' : 'Create Card'}
                 </Button>
