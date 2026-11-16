@@ -90,49 +90,49 @@ export function StatsView({ cards }: StatsViewProps) {
             {/* Overview Stats */}
             <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md" mb="lg">
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#334155'} tt="uppercase" fw={700}>
                         Total Cards
                     </Text>
-                    <Title order={2} mt={4}>
+                    <Title order={2} mt={4} c={isDark ? undefined : '#0f172a'}>
                         {stats.total}
                     </Title>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#475569'} mt={4}>
                         Across all topics
                     </Text>
                 </Paper>
 
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#334155'} tt="uppercase" fw={700}>
                         Due Today
                     </Text>
-                    <Title order={2} mt={4} c={stats.dueNow > 0 ? (isDark ? 'red' : '#e03131') : (isDark ? 'teal' : '#099268')}>
+                    <Title order={2} mt={4} c={stats.dueNow > 0 ? (isDark ? 'red' : '#b91c1c') : (isDark ? 'teal' : '#047857')}>
                         {stats.dueNow}
                     </Title>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#475569'} mt={4}>
                         {stats.dueNow > 0 ? 'Ready for review' : 'All caught up!'}
                     </Text>
                 </Paper>
 
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#334155'} tt="uppercase" fw={700}>
                         Total Reviews
                     </Text>
                     <Title order={2} mt={4} c={isDark ? '#a9cef4' : '#1971c2'}>
                         {stats.totalReps}
                     </Title>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#475569'} mt={4}>
                         Completed reps
                     </Text>
                 </Paper>
 
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#334155'} tt="uppercase" fw={700}>
                         Avg Memory Stability
                     </Text>
                     <Title order={2} mt={4} c={isDark ? 'blue' : '#1864ab'}>
                         {stats.avgStability}d
                     </Title>
-                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#475569'} mt={4}>
                         FSRS memory half-life
                     </Text>
                 </Paper>
@@ -141,12 +141,12 @@ export function StatsView({ cards }: StatsViewProps) {
             {/* Memory Stage & Difficulty Breakdown */}
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" mb="lg">
                 <Paper p="lg" radius="lg" withBorder style={paperStyle}>
-                    <Title order={4} mb="md">
+                    <Title order={4} mb="md" c={isDark ? undefined : '#0f172a'}>
                         Learning Progression
                     </Title>
                     <Group justify="space-between" mb="xs">
-                        <Text size="sm">Mastery / Retention</Text>
-                        <Text size="sm" fw={700}>{retentionPct}%</Text>
+                        <Text size="sm" c={isDark ? undefined : '#0f172a'} fw={600}>Mastery / Retention</Text>
+                        <Text size="sm" fw={700} c={isDark ? undefined : '#047857'}>{retentionPct}%</Text>
                     </Group>
                     <Progress value={retentionPct} color="teal" size="lg" radius="xl" mb="lg" />
 
@@ -154,38 +154,38 @@ export function StatsView({ cards }: StatsViewProps) {
                         <Group justify="space-between">
                             <Group gap="xs">
                                 <Badge size="xs" color="gray" circle />
-                                <Text size="sm">New (0 reviews)</Text>
+                                <Text size="sm" c={isDark ? undefined : '#0f172a'}>New (0 reviews)</Text>
                             </Group>
-                            <Text size="sm" fw={600}>{stats.newCount}</Text>
+                            <Text size="sm" fw={600} c={isDark ? undefined : '#0f172a'}>{stats.newCount}</Text>
                         </Group>
 
                         <Group justify="space-between">
                             <Group gap="xs">
                                 <Badge size="xs" color={isDark ? 'ice' : 'blue'} circle />
-                                <Text size="sm">Learning (1-2 reviews)</Text>
+                                <Text size="sm" c={isDark ? undefined : '#0f172a'}>Learning (1-2 reviews)</Text>
                             </Group>
-                            <Text size="sm" fw={600}>{stats.learningCount}</Text>
+                            <Text size="sm" fw={600} c={isDark ? undefined : '#0f172a'}>{stats.learningCount}</Text>
                         </Group>
 
                         <Group justify="space-between">
                             <Group gap="xs">
                                 <Badge size="xs" color="teal" circle />
-                                <Text size="sm">Mastered (3+ reviews)</Text>
+                                <Text size="sm" c={isDark ? undefined : '#0f172a'}>Mastered (3+ reviews)</Text>
                             </Group>
-                            <Text size="sm" fw={600}>{stats.reviewCount}</Text>
+                            <Text size="sm" fw={600} c={isDark ? undefined : '#0f172a'}>{stats.reviewCount}</Text>
                         </Group>
                     </Stack>
                 </Paper>
 
                 <Paper p="lg" radius="lg" withBorder style={paperStyle}>
-                    <Title order={4} mb="md">
+                    <Title order={4} mb="md" c={isDark ? undefined : '#0f172a'}>
                         Difficulty Breakdown
                     </Title>
                     <Stack gap="md">
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c={isDark ? 'teal' : '#099268'} fw={600}>Easy</Text>
-                                <Text size="sm">{stats.difficultyCount.Easy}</Text>
+                                <Text size="sm" c={isDark ? 'teal' : '#047857'} fw={700}>Easy</Text>
+                                <Text size="sm" fw={600} c={isDark ? undefined : '#0f172a'}>{stats.difficultyCount.Easy}</Text>
                             </Group>
                             <Progress
                                 value={stats.total ? (stats.difficultyCount.Easy / stats.total) * 100 : 0}
@@ -196,8 +196,8 @@ export function StatsView({ cards }: StatsViewProps) {
 
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c={isDark ? '#a9cef4' : '#1971c2'} fw={600}>Medium</Text>
-                                <Text size="sm">{stats.difficultyCount.Medium}</Text>
+                                <Text size="sm" c={isDark ? '#a9cef4' : '#1864ab'} fw={700}>Medium</Text>
+                                <Text size="sm" fw={600} c={isDark ? undefined : '#0f172a'}>{stats.difficultyCount.Medium}</Text>
                             </Group>
                             <Progress
                                 value={stats.total ? (stats.difficultyCount.Medium / stats.total) * 100 : 0}
@@ -208,8 +208,8 @@ export function StatsView({ cards }: StatsViewProps) {
 
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c={isDark ? 'rose' : '#e03131'} fw={600}>Hard</Text>
-                                <Text size="sm">{stats.difficultyCount.Hard}</Text>
+                                <Text size="sm" c={isDark ? 'rose' : '#b91c1c'} fw={700}>Hard</Text>
+                                <Text size="sm" fw={600} c={isDark ? undefined : '#0f172a'}>{stats.difficultyCount.Hard}</Text>
                             </Group>
                             <Progress
                                 value={stats.total ? (stats.difficultyCount.Hard / stats.total) * 100 : 0}
@@ -224,7 +224,7 @@ export function StatsView({ cards }: StatsViewProps) {
             {/* Top Topics / Patterns */}
             {stats.topTags.length > 0 && (
                 <Paper p="lg" radius="lg" withBorder style={paperStyle}>
-                    <Title order={4} mb="md">
+                    <Title order={4} mb="md" c={isDark ? undefined : '#0f172a'}>
                         Top Algorithm Patterns & Tags
                     </Title>
                     <Group gap="sm">
@@ -234,7 +234,12 @@ export function StatsView({ cards }: StatsViewProps) {
                                 size="lg"
                                 variant="light"
                                 color={isDark ? 'ice' : 'blue'}
-                                style={{ textTransform: 'none' }}
+                                style={{
+                                    textTransform: 'none',
+                                    fontWeight: 600,
+                                    color: isDark ? undefined : '#0f3857',
+                                    background: isDark ? undefined : '#e0effe'
+                                }}
                             >
                                 {tag} ({count})
                             </Badge>

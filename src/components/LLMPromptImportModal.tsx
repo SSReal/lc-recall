@@ -244,29 +244,32 @@ export function LLMPromptImportModal({
 
                             {/* Quick example problem links */}
                             <Group gap={6} mt={6}>
-                                <Text size="xs" c="dimmed">
+                                <Text size="xs" c={isDark ? "dimmed" : "#0f172a"} fw={600}>
                                     Quick Examples:
                                 </Text>
                                 <Anchor
                                     size="xs"
+                                    c={isDark ? undefined : "#1971c2"}
                                     onClick={() => setUrl('https://leetcode.com/problems/two-sum/')}
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', fontWeight: 500 }}
                                 >
                                     LeetCode Two Sum
                                 </Anchor>
-                                <Text size="xs" c="dimmed">•</Text>
+                                <Text size="xs" c={isDark ? "dimmed" : "#64748b"}>•</Text>
                                 <Anchor
                                     size="xs"
+                                    c={isDark ? undefined : "#1971c2"}
                                     onClick={() => setUrl('https://leetcode.com/problems/trapping-rain-water/')}
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', fontWeight: 500 }}
                                 >
                                     Trapping Rain Water
                                 </Anchor>
-                                <Text size="xs" c="dimmed">•</Text>
+                                <Text size="xs" c={isDark ? "dimmed" : "#64748b"}>•</Text>
                                 <Anchor
                                     size="xs"
+                                    c={isDark ? undefined : "#1971c2"}
                                     onClick={() => setUrl('https://codeforces.com/problemset/problem/4/A')}
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', fontWeight: 500 }}
                                 >
                                     Codeforces 4A (Watermelon)
                                 </Anchor>
@@ -575,14 +578,14 @@ export function LLMPromptImportModal({
                                             </Group>
 
                                             <Box mb="xs">
-                                                <Text size="xs" fw={600} c="dimmed" mb={2}>
+                                                <Text size="xs" fw={700} c={isDark ? "dimmed" : "#0f172a"} mb={2}>
                                                     Question:
                                                 </Text>
                                                 <MarkdownRenderer content={draft.question} />
                                             </Box>
 
                                             <Box mb="xs">
-                                                <Text size="xs" fw={600} c="dimmed" mb={2}>
+                                                <Text size="xs" fw={700} c={isDark ? "dimmed" : "#0f172a"} mb={2}>
                                                     Answer / Intuition:
                                                 </Text>
                                                 <MarkdownRenderer content={draft.answer} />
@@ -590,7 +593,7 @@ export function LLMPromptImportModal({
 
                                             {draft.codeSnippet && (
                                                 <Box>
-                                                    <Text size="xs" fw={600} c="dimmed" mb={2}>
+                                                    <Text size="xs" fw={700} c={isDark ? "dimmed" : "#0f172a"} mb={2}>
                                                         Code Snippet:
                                                     </Text>
                                                     <CodeBlock

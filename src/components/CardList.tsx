@@ -254,7 +254,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         size="xs"
-                                                        c="dimmed"
+                                                        c={isDark ? "dimmed" : "#1971c2"}
                                                         style={{ display: 'inline-flex', alignItems: 'center' }}
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
@@ -262,7 +262,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                                     </Anchor>
                                                 )}
                                             </Group>
-                                            <Text size="xs" c="dimmed" lineClamp={1}>
+                                            <Text size="xs" c={isDark ? "dimmed" : "#334155"} lineClamp={1}>
                                                 {card.question}
                                             </Text>
                                         </Table.Td>
@@ -282,12 +282,22 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                         <Table.Td>
                                             <Group gap={4}>
                                                 {card.tags?.slice(0, 3).map((tag) => (
-                                                    <Badge key={tag} size="xs" variant="outline" color="gray">
+                                                    <Badge
+                                                        key={tag}
+                                                        size="xs"
+                                                        variant="outline"
+                                                        color={isDark ? "gray" : "blue"}
+                                                        style={{
+                                                            borderColor: isDark ? undefined : '#cbd5e1',
+                                                            color: isDark ? undefined : '#0f172a',
+                                                            fontWeight: 500
+                                                        }}
+                                                    >
                                                         {tag}
                                                     </Badge>
                                                 ))}
                                                 {(card.tags?.length || 0) > 3 && (
-                                                    <Text size="xs" c="dimmed">
+                                                    <Text size="xs" c={isDark ? "dimmed" : "#334155"} fw={600}>
                                                         +{card.tags!.length - 3}
                                                     </Text>
                                                 )}
@@ -307,7 +317,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                         </Table.Td>
 
                                         <Table.Td>
-                                            <Text size="sm">{card.fsrs.reps || 0}</Text>
+                                            <Text size="sm" fw={600} c={isDark ? undefined : '#0f172a'}>{card.fsrs.reps || 0}</Text>
                                         </Table.Td>
 
                                         <Table.Td style={{ textAlign: 'right', width: 90, minWidth: 90, whiteSpace: 'nowrap' }}>
@@ -383,7 +393,17 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                     </Badge>
                                 )}
                                 {viewingCard.tags?.map((tag) => (
-                                    <Badge key={tag} size="xs" variant="outline" color="gray">
+                                    <Badge
+                                        key={tag}
+                                        size="xs"
+                                        variant="outline"
+                                        color={isDark ? "gray" : "blue"}
+                                        style={{
+                                            borderColor: isDark ? undefined : '#cbd5e1',
+                                            color: isDark ? undefined : '#0f172a',
+                                            fontWeight: 500
+                                        }}
+                                    >
                                         #{tag}
                                     </Badge>
                                 ))}
@@ -408,10 +428,10 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                             style={{
                                 borderRadius: 8,
                                 background: isDark ? '#061213' : '#f8fafc',
-                                border: isDark ? '1px solid #162329' : '1px solid #e2e8f0'
+                                border: isDark ? '1px solid #162329' : '1px solid #cbd5e1'
                             }}
                         >
-                            <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#64748b'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                            <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#0f172a'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
                                 Problem Description
                             </Text>
                             <MarkdownRenderer content={viewingCard.question} />
@@ -424,9 +444,9 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                 borderRadius: 8,
                                 borderLeft: isDark ? '4px solid #a9cef4' : '4px solid #1971c2',
                                 background: isDark ? '#081414' : '#f8fafc',
-                                borderTop: isDark ? '1px solid #162329' : '1px solid #e2e8f0',
-                                borderRight: isDark ? '1px solid #162329' : '1px solid #e2e8f0',
-                                borderBottom: isDark ? '1px solid #162329' : '1px solid #e2e8f0'
+                                borderTop: isDark ? '1px solid #162329' : '1px solid #cbd5e1',
+                                borderRight: isDark ? '1px solid #162329' : '1px solid #cbd5e1',
+                                borderBottom: isDark ? '1px solid #162329' : '1px solid #cbd5e1'
                             }}
                         >
                             <Text size="xs" fw={700} c={isDark ? '#a9cef4' : '#1971c2'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
@@ -444,7 +464,16 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                     </Badge>
                                 )}
                                 {viewingCard.spaceComplexity && (
-                                    <Badge size="md" variant="light" color="gray" style={{ color: isDark ? '#7ea0b7' : '#475569' }}>
+                                    <Badge
+                                        size="md"
+                                        variant="light"
+                                        color="gray"
+                                        style={{
+                                            color: isDark ? '#7ea0b7' : '#0f172a',
+                                            background: isDark ? undefined : '#e2e8f0',
+                                            fontWeight: 600
+                                        }}
+                                    >
                                         Space: {viewingCard.spaceComplexity}
                                     </Badge>
                                 )}
@@ -454,7 +483,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                         {/* Code Snippet */}
                         {viewingCard.codeSnippet && (
                             <div>
-                                <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#64748b'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                                <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#0f172a'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
                                     Optimal Implementation
                                 </Text>
                                 <CodeBlock code={viewingCard.codeSnippet} maxHeight={300} />

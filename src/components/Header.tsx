@@ -26,8 +26,8 @@ export function Header({
         const isActive = activeTab === tab;
         return {
             background: isActive ? (isDark ? 'rgba(169, 206, 244, 0.14)' : '#e7f5ff') : 'transparent',
-            color: isActive ? (isDark ? '#a9cef4' : '#1971c2') : (isDark ? '#7ea0b7' : '#475569'),
-            fontWeight: isActive ? 600 : 500,
+            color: isActive ? (isDark ? '#a9cef4' : '#1971c2') : (isDark ? '#7ea0b7' : '#1e293b'),
+            fontWeight: isActive ? 700 : 600,
             border: isActive ? (isDark ? '1px solid rgba(169, 206, 244, 0.32)' : '1px solid #a5d8ff') : '1px solid transparent'
         };
     };
@@ -36,9 +36,9 @@ export function Header({
         <Box
             component="header"
             style={{
-                borderBottom: isDark ? '1px solid #1a2932' : '1px solid #e2e8f0',
+                borderBottom: isDark ? '1px solid #1a2932' : '1px solid #cbd5e1',
                 padding: '12px 24px',
-                background: isDark ? 'rgba(7, 19, 20, 0.9)' : 'rgba(255, 255, 255, 0.95)',
+                background: isDark ? 'rgba(7, 19, 20, 0.9)' : 'rgba(255, 255, 255, 0.98)',
                 backdropFilter: 'blur(16px)',
                 position: 'sticky',
                 top: 0,
@@ -68,11 +68,11 @@ export function Header({
                             <Title order={3} style={{ letterSpacing: '-0.5px', margin: 0, fontSize: 18 }}>
                                 LC Recall
                             </Title>
-                            <Badge size="xs" variant="light" color="ice">
+                            <Badge size="xs" variant="light" color={isDark ? 'ice' : 'blue'}>
                                 FSRS v7
                             </Badge>
                         </Group>
-                        <span style={{ fontSize: 12, color: isDark ? '#7ea0b7' : '#64748b' }}>
+                        <span style={{ fontSize: 12, color: isDark ? '#7ea0b7' : '#334155', fontWeight: 500 }}>
                             Active Spaced Repetition for LeetCode
                         </span>
                     </div>

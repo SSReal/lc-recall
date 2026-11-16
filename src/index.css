@@ -18,7 +18,51 @@ body,
 [data-mantine-color-scheme="light"] body,
 [data-mantine-color-scheme="light"] #root {
   background-color: #f8fafc;
-  color: #1e293b;
+  color: #0f172a;
+}
+
+[data-mantine-color-scheme="light"] {
+  --mantine-color-dimmed: #475569 !important;
+  --mantine-color-placeholder: #64748b !important;
+  --input-placeholder-color: #64748b !important;
+  --mantine-color-text: #0f172a !important;
+  --mantine-color-gray-outline: #334155 !important;
+  --mantine-color-gray-light-color: #0f172a !important;
+  --mantine-color-default-color: #0f172a !important;
+  --mantine-color-default-border: #cbd5e1 !important;
+}
+
+[data-mantine-color-scheme="light"] input::placeholder,
+[data-mantine-color-scheme="light"] textarea::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Input-input {
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Input-input:focus {
+  border-color: #1971c2 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-table {
+  color: #0f172a;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-th {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #cbd5e1 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-td {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-tr:hover {
+  background-color: #f1f5f9 !important;
 }
 
 /* Custom scrollbars based on Coolors palette */

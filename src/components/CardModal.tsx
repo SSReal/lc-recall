@@ -155,7 +155,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         p="md"
                         style={{
                             borderRadius: 8,
-                            border: isDark ? '1px solid #1e2f38' : '1px solid #e2e8f0',
+                            border: isDark ? '1px solid #1e2f38' : '1px solid #cbd5e1',
                             background: isDark ? '#061213' : '#f8fafc',
                             minHeight: 88
                         }}
@@ -163,7 +163,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         {question.trim() ? (
                             <MarkdownRenderer content={question} />
                         ) : (
-                            <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fs="italic">
+                            <Text size="sm" c={isDark ? 'dimmed' : '#334155'} fs="italic">
                                 Nothing to preview. Type markdown in the Write tab.
                             </Text>
                         )}
@@ -201,7 +201,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         p="md"
                         style={{
                             borderRadius: 8,
-                            border: isDark ? '1px solid #1e2f38' : '1px solid #e2e8f0',
+                            border: isDark ? '1px solid #1e2f38' : '1px solid #cbd5e1',
                             background: isDark ? '#061213' : '#f8fafc',
                             minHeight: 110
                         }}
@@ -209,7 +209,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         {answer.trim() ? (
                             <MarkdownRenderer content={answer} />
                         ) : (
-                            <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fs="italic">
+                            <Text size="sm" c={isDark ? 'dimmed' : '#334155'} fs="italic">
                                 Nothing to preview. Type markdown in the Write tab.
                             </Text>
                         )}
@@ -270,11 +270,11 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                                 p="md"
                                 style={{
                                     borderRadius: 8,
-                                    border: isDark ? '1px solid #1e2f38' : '1px solid #e2e8f0',
+                                    border: isDark ? '1px solid #1e2f38' : '1px solid #cbd5e1',
                                     background: isDark ? '#061213' : '#f8fafc'
                                 }}
                             >
-                                <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fs="italic">
+                                <Text size="sm" c={isDark ? 'dimmed' : '#334155'} fs="italic">
                                     No code snippet entered yet.
                                 </Text>
                             </Box>

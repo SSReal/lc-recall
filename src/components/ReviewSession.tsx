@@ -216,10 +216,10 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                                 currentCard.tags?.map(tag => (
                                     <Badge
                                         key={tag}
-                                        variant="subtle"
-                                        color="gray"
+                                        variant="outline"
+                                        color={isDark ? "gray" : "blue"}
                                         size="sm"
-                                        style={{ textTransform: 'none', color: isDark ? '#7ea0b7' : '#475569' }}
+                                        style={{ textTransform: 'none', color: isDark ? '#7ea0b7' : '#0f172a', borderColor: isDark ? undefined : '#cbd5e1', fontWeight: 500 }}
                                     >
                                         #{tag}
                                     </Badge>
@@ -253,10 +253,10 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                     mb="lg"
                     style={{
                         background: isDark ? '#061213' : '#f8fafc',
-                        borderColor: isDark ? '#162329' : '#e2e8f0'
+                        borderColor: isDark ? '#162329' : '#cbd5e1'
                     }}
                 >
-                    <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#64748b'} tt="uppercase" mb={8} style={{ letterSpacing: '0.5px' }}>
+                    <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#0f172a'} tt="uppercase" mb={8} style={{ letterSpacing: '0.5px' }}>
                         Problem / Challenge
                     </Text>
                     <MarkdownRenderer content={currentCard.question} />
@@ -310,7 +310,16 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                                     </Badge>
                                 )}
                                 {currentCard.spaceComplexity && (
-                                    <Badge size="md" variant="light" color="gray" style={{ color: isDark ? '#7ea0b7' : '#475569' }}>
+                                    <Badge
+                                        size="md"
+                                        variant="light"
+                                        color="gray"
+                                        style={{
+                                            color: isDark ? '#7ea0b7' : '#0f172a',
+                                            background: isDark ? undefined : '#e2e8f0',
+                                            fontWeight: 600
+                                        }}
+                                    >
                                         Space: {currentCard.spaceComplexity}
                                     </Badge>
                                 )}
@@ -320,7 +329,7 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                         {/* Code Snippet */}
                         {currentCard.codeSnippet && (
                             <div>
-                                <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#64748b'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                                <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#0f172a'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
                                     Optimal Implementation
                                 </Text>
                                 <CodeBlock code={currentCard.codeSnippet} maxHeight={340} />
@@ -329,7 +338,7 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
 
                         {/* FSRS Rating Buttons - Subtle Red to Green progression */}
                         <Box mt="lg">
-                            <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#475569'} tt="uppercase" ta="center" mb="xs">
+                            <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#0f172a'} tt="uppercase" ta="center" mb="xs">
                                 How well did you recall this solution?
                             </Text>
                             <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="sm">
@@ -339,14 +348,14 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                                     size="md"
                                     onClick={() => handleRating(1)}
                                     style={{
-                                        background: isDark ? 'rgba(239, 68, 68, 0.12)' : 'rgba(239, 68, 68, 0.08)',
-                                        borderColor: isDark ? 'rgba(239, 68, 68, 0.32)' : 'rgba(239, 68, 68, 0.25)',
+                                        background: isDark ? 'rgba(239, 68, 68, 0.12)' : '#fef2f2',
+                                        borderColor: isDark ? 'rgba(239, 68, 68, 0.32)' : '#fca5a5',
                                         transition: 'all 0.15s ease'
                                     }}
                                 >
                                     <Stack gap={2} align="center">
-                                        <Text size="sm" fw={700} c={isDark ? '#f87171' : '#dc2626'}>1. Again</Text>
-                                        <Text size="xs" c={isDark ? '#fca5a5' : '#b91c1c'} opacity={0.85}>{intervals[1] || '<1m'}</Text>
+                                        <Text size="sm" fw={700} c={isDark ? '#f87171' : '#b91c1c'}>1. Again</Text>
+                                        <Text size="xs" c={isDark ? '#fca5a5' : '#991b1b'} opacity={0.95}>{intervals[1] || '<1m'}</Text>
                                     </Stack>
                                 </Button>
 
@@ -356,14 +365,14 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                                     size="md"
                                     onClick={() => handleRating(2)}
                                     style={{
-                                        background: isDark ? 'rgba(245, 158, 11, 0.12)' : 'rgba(245, 158, 11, 0.1)',
-                                        borderColor: isDark ? 'rgba(245, 158, 11, 0.32)' : 'rgba(245, 158, 11, 0.35)',
+                                        background: isDark ? 'rgba(245, 158, 11, 0.12)' : '#fffbeb',
+                                        borderColor: isDark ? 'rgba(245, 158, 11, 0.32)' : '#fcd34d',
                                         transition: 'all 0.15s ease'
                                     }}
                                 >
                                     <Stack gap={2} align="center">
-                                        <Text size="sm" fw={700} c={isDark ? '#fbbf24' : '#b45309'}>2. Hard</Text>
-                                        <Text size="xs" c={isDark ? '#fde68a' : '#92400e'} opacity={0.9}>{intervals[2] || '~12h'}</Text>
+                                        <Text size="sm" fw={700} c={isDark ? '#fbbf24' : '#92400e'}>2. Hard</Text>
+                                        <Text size="xs" c={isDark ? '#fde68a' : '#78350f'} opacity={0.95}>{intervals[2] || '~12h'}</Text>
                                     </Stack>
                                 </Button>
 
@@ -373,14 +382,14 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                                     size="md"
                                     onClick={() => handleRating(3)}
                                     style={{
-                                        background: isDark ? 'rgba(52, 211, 153, 0.12)' : 'rgba(52, 211, 153, 0.08)',
-                                        borderColor: isDark ? 'rgba(52, 211, 153, 0.32)' : 'rgba(52, 211, 153, 0.25)',
+                                        background: isDark ? 'rgba(52, 211, 153, 0.12)' : '#f0fdf4',
+                                        borderColor: isDark ? 'rgba(52, 211, 153, 0.32)' : '#86efac',
                                         transition: 'all 0.15s ease'
                                     }}
                                 >
                                     <Stack gap={2} align="center">
-                                        <Text size="sm" fw={700} c={isDark ? '#6ee7b7' : '#059669'}>3. Good</Text>
-                                        <Text size="xs" c={isDark ? '#a7f3d0' : '#047857'} opacity={0.85}>{intervals[3] || '~3d'}</Text>
+                                        <Text size="sm" fw={700} c={isDark ? '#6ee7b7' : '#166534'}>3. Good</Text>
+                                        <Text size="xs" c={isDark ? '#a7f3d0' : '#14532d'} opacity={0.95}>{intervals[3] || '~3d'}</Text>
                                     </Stack>
                                 </Button>
 
@@ -390,14 +399,14 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                                     size="md"
                                     onClick={() => handleRating(4)}
                                     style={{
-                                        background: isDark ? 'rgba(16, 185, 129, 0.18)' : 'rgba(16, 185, 129, 0.12)',
-                                        borderColor: isDark ? 'rgba(16, 185, 129, 0.42)' : 'rgba(16, 185, 129, 0.35)',
+                                        background: isDark ? 'rgba(16, 185, 129, 0.18)' : '#ecfdf5',
+                                        borderColor: isDark ? 'rgba(16, 185, 129, 0.42)' : '#6ee7b7',
                                         transition: 'all 0.15s ease'
                                     }}
                                 >
                                     <Stack gap={2} align="center">
-                                        <Text size="sm" fw={700} c={isDark ? '#34d399' : '#047857'}>4. Easy</Text>
-                                        <Text size="xs" c={isDark ? '#6ee7b7' : '#065f46'} opacity={0.9}>{intervals[4] || '~1w'}</Text>
+                                        <Text size="sm" fw={700} c={isDark ? '#34d399' : '#065f46'}>4. Easy</Text>
+                                        <Text size="xs" c={isDark ? '#6ee7b7' : '#064e3b'} opacity={0.95}>{intervals[4] || '~1w'}</Text>
                                     </Stack>
                                 </Button>
                             </SimpleGrid>
