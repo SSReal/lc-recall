@@ -77,8 +77,8 @@ export function CodeBlock({
                                         style={{
                                             fontSize: 11,
                                             height: 22,
-                                            fontWeight: 500,
-                                            color: copied ? undefined : (isDark ? '#7ea0b7' : '#64748b')
+                                            fontWeight: 600,
+                                            color: copied ? undefined : (isDark ? '#7ea0b7' : '#1e293b')
                                         }}
                                     >
                                         {copied ? '✓ Copied' : 'Copy'}

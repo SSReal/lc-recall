@@ -225,7 +225,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
                                 <Table.Th>Problem</Table.Th>
                                 <Table.Th>Difficulty</Table.Th>
                                 <Table.Th>Tags</Table.Th>
-                                <Table.Th>Due / Status</Table.Th>
+                                <Table.Th style={{ minWidth: 125 }}>Due / Status</Table.Th>
                                 <Table.Th>Reps</Table.Th>
                                 <Table.Th style={{ textAlign: 'right', width: 90, minWidth: 90 }}>Actions</Table.Th>
                             </Table.Tr>
@@ -306,11 +306,21 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLM
 
                                         <Table.Td style={{ whiteSpace: 'nowrap' }}>
                                             {isDue ? (
-                                                <Badge size="sm" color={isDark ? 'rose' : 'red'} variant="filled" style={{ whiteSpace: 'nowrap' }}>
+                                                <Badge
+                                                    size="sm"
+                                                    color={isDark ? 'rose' : 'red'}
+                                                    variant="filled"
+                                                    styles={{ label: { overflow: 'visible' } }}
+                                                >
                                                     Due Now
                                                 </Badge>
                                             ) : (
-                                                <Badge size="sm" color={isDark ? 'ice' : 'blue'} variant="light" style={{ whiteSpace: 'nowrap' }}>
+                                                <Badge
+                                                    size="sm"
+                                                    color={isDark ? 'ice' : 'blue'}
+                                                    variant="light"
+                                                    styles={{ label: { overflow: 'visible' } }}
+                                                >
                                                     in {formatInterval(dueAt)}
                                                 </Badge>
                                             )}
