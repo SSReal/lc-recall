@@ -26,3 +26,291 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #597081;
 }
+
+/* ==========================================================================
+   Prism.js Syntax Highlighting Theme - Coolors Palette
+   Palette: #040f0f, #a9cef4, #7ea0b7, #597081, #875053
+   ========================================================================== */
+
+/* Dark Mode Tokens (Default) */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #597081;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #7ea0b7;
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #fca5a5;
+}
+
+.token.boolean,
+.token.number {
+  color: #fdba74;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #86efac;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #7ea0b7;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #a9cef4;
+  font-weight: 600;
+}
+
+.token.function,
+.token.class-name {
+  color: #93c5fd;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #f472b6;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+/* Light mode adjustments */
+[data-mantine-color-scheme="light"] .token.comment,
+[data-mantine-color-scheme="light"] .token.prolog,
+[data-mantine-color-scheme="light"] .token.doctype,
+[data-mantine-color-scheme="light"] .token.cdata {
+  color: #6a737d;
+}
+
+[data-mantine-color-scheme="light"] .token.punctuation {
+  color: #586069;
+}
+
+[data-mantine-color-scheme="light"] .token.property,
+[data-mantine-color-scheme="light"] .token.tag,
+[data-mantine-color-scheme="light"] .token.constant,
+[data-mantine-color-scheme="light"] .token.symbol,
+[data-mantine-color-scheme="light"] .token.deleted {
+  color: #d73a49;
+}
+
+[data-mantine-color-scheme="light"] .token.boolean,
+[data-mantine-color-scheme="light"] .token.number {
+  color: #005cc5;
+}
+
+[data-mantine-color-scheme="light"] .token.selector,
+[data-mantine-color-scheme="light"] .token.attr-name,
+[data-mantine-color-scheme="light"] .token.string,
+[data-mantine-color-scheme="light"] .token.char,
+[data-mantine-color-scheme="light"] .token.builtin,
+[data-mantine-color-scheme="light"] .token.inserted {
+  color: #22863a;
+}
+
+[data-mantine-color-scheme="light"] .token.operator,
+[data-mantine-color-scheme="light"] .token.entity,
+[data-mantine-color-scheme="light"] .token.url {
+  color: #d73a49;
+}
+
+[data-mantine-color-scheme="light"] .token.atrule,
+[data-mantine-color-scheme="light"] .token.attr-value,
+[data-mantine-color-scheme="light"] .token.keyword {
+  color: #d73a49;
+}
+
+[data-mantine-color-scheme="light"] .token.function,
+[data-mantine-color-scheme="light"] .token.class-name {
+  color: #6f42c1;
+}
+
+[data-mantine-color-scheme="light"] .token.regex,
+[data-mantine-color-scheme="light"] .token.important,
+[data-mantine-color-scheme="light"] .token.variable {
+  color: #e36209;
+}
+
+/* ==========================================================================
+   Markdown Body Typography Styles
+   ========================================================================== */
+
+.markdown-body {
+  line-height: 1.65;
+  font-size: 14.5px;
+  word-break: break-word;
+}
+
+.markdown-body p {
+  margin: 0 0 10px 0;
+  line-height: 1.68;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 {
+  font-weight: 700;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.markdown-body h1 {
+  font-size: 1.45rem;
+  border-bottom: 1px solid #1e2f38;
+  padding-bottom: 6px;
+}
+
+.markdown-body h2 {
+  font-size: 1.25rem;
+  border-bottom: 1px solid #1e2f38;
+  padding-bottom: 4px;
+}
+
+.markdown-body h3 {
+  font-size: 1.1rem;
+}
+
+.markdown-body h4 {
+  font-size: 0.95rem;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 6px 0 12px 0;
+  padding-left: 22px;
+}
+
+.markdown-body li {
+  margin: 4px 0;
+  line-height: 1.65;
+}
+
+.markdown-body blockquote {
+  margin: 10px 0;
+  padding: 8px 14px;
+  border-left: 4px solid #7ea0b7;
+  background: rgba(126, 160, 183, 0.08);
+  border-radius: 0 6px 6px 0;
+  color: #c5d9e8;
+}
+
+.markdown-body :not(pre) > code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.88em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(169, 206, 244, 0.12);
+  color: #a9cef4;
+  border: 1px solid rgba(169, 206, 244, 0.2);
+  white-space: break-spaces;
+}
+
+.markdown-body a {
+  color: #a9cef4;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid #1e2f38;
+  margin: 18px 0;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  border: 1px solid #1e2f38;
+  margin: 12px 0;
+}
+
+.markdown-body thead {
+  background: #081414;
+  border-bottom: 2px solid #26353e;
+}
+
+.markdown-body th {
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #1e2f38;
+}
+
+.markdown-body td {
+  padding: 7px 12px;
+  border: 1px solid #162329;
+}
+
+/* Light mode markdown adjustments */
+[data-mantine-color-scheme="light"] .markdown-body h1,
+[data-mantine-color-scheme="light"] .markdown-body h2 {
+  border-bottom-color: #e5e7eb;
+}
+
+[data-mantine-color-scheme="light"] .markdown-body blockquote {
+  background: #f8f9fa;
+  color: #495057;
+}
+
+[data-mantine-color-scheme="light"] .markdown-body :not(pre) > code {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1c6ca1;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+[data-mantine-color-scheme="light"] .markdown-body a {
+  color: #1d6fba;
+}
+
+[data-mantine-color-scheme="light"] .markdown-body table,
+[data-mantine-color-scheme="light"] .markdown-body th,
+[data-mantine-color-scheme="light"] .markdown-body td {
+  border-color: #e5e7eb;
+}
+
+[data-mantine-color-scheme="light"] .markdown-body thead {
+  background: #f3f4f6;
+  border-bottom-color: #d1d5db;
+}
+
+[data-mantine-color-scheme="light"] .markdown-body hr {
+  border-top-color: #e5e7eb;
+}
