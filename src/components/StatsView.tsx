@@ -76,8 +76,9 @@ export function StatsView({ cards }: StatsViewProps) {
         : 0;
 
     const paperStyle = {
-        background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
-        borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+        background: isDark ? 'var(--mantine-color-dark-6)' : '#ffffff',
+        borderColor: isDark ? 'var(--mantine-color-dark-4)' : '#e2e8f0',
+        boxShadow: isDark ? undefined : '0 1px 3px rgba(0, 0, 0, 0.04)'
     };
 
     return (
@@ -89,49 +90,49 @@ export function StatsView({ cards }: StatsViewProps) {
             {/* Overview Stats */}
             <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md" mb="lg">
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
                         Total Cards
                     </Text>
                     <Title order={2} mt={4}>
                         {stats.total}
                     </Title>
-                    <Text size="xs" c="dimmed" mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
                         Across all topics
                     </Text>
                 </Paper>
 
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
                         Due Today
                     </Text>
-                    <Title order={2} mt={4} c={stats.dueNow > 0 ? 'red' : 'teal'}>
+                    <Title order={2} mt={4} c={stats.dueNow > 0 ? (isDark ? 'red' : '#e03131') : (isDark ? 'teal' : '#099268')}>
                         {stats.dueNow}
                     </Title>
-                    <Text size="xs" c="dimmed" mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
                         {stats.dueNow > 0 ? 'Ready for review' : 'All caught up!'}
                     </Text>
                 </Paper>
 
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
                         Total Reviews
                     </Text>
-                    <Title order={2} mt={4} c="#a9cef4">
+                    <Title order={2} mt={4} c={isDark ? '#a9cef4' : '#1971c2'}>
                         {stats.totalReps}
                     </Title>
-                    <Text size="xs" c="dimmed" mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
                         Completed reps
                     </Text>
                 </Paper>
 
                 <Paper p="md" radius="lg" withBorder style={paperStyle}>
-                    <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} tt="uppercase" fw={700}>
                         Avg Memory Stability
                     </Text>
-                    <Title order={2} mt={4} c="blue">
+                    <Title order={2} mt={4} c={isDark ? 'blue' : '#1864ab'}>
                         {stats.avgStability}d
                     </Title>
-                    <Text size="xs" c="dimmed" mt={4}>
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mt={4}>
                         FSRS memory half-life
                     </Text>
                 </Paper>
@@ -160,7 +161,7 @@ export function StatsView({ cards }: StatsViewProps) {
 
                         <Group justify="space-between">
                             <Group gap="xs">
-                                <Badge size="xs" color="ice" circle />
+                                <Badge size="xs" color={isDark ? 'ice' : 'blue'} circle />
                                 <Text size="sm">Learning (1-2 reviews)</Text>
                             </Group>
                             <Text size="sm" fw={600}>{stats.learningCount}</Text>
@@ -183,7 +184,7 @@ export function StatsView({ cards }: StatsViewProps) {
                     <Stack gap="md">
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c="teal" fw={600}>Easy</Text>
+                                <Text size="sm" c={isDark ? 'teal' : '#099268'} fw={600}>Easy</Text>
                                 <Text size="sm">{stats.difficultyCount.Easy}</Text>
                             </Group>
                             <Progress
@@ -195,24 +196,24 @@ export function StatsView({ cards }: StatsViewProps) {
 
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c="#a9cef4" fw={600}>Medium</Text>
+                                <Text size="sm" c={isDark ? '#a9cef4' : '#1971c2'} fw={600}>Medium</Text>
                                 <Text size="sm">{stats.difficultyCount.Medium}</Text>
                             </Group>
                             <Progress
                                 value={stats.total ? (stats.difficultyCount.Medium / stats.total) * 100 : 0}
-                                color="ice"
+                                color={isDark ? 'ice' : 'blue'}
                                 size="sm"
                             />
                         </div>
 
                         <div>
                             <Group justify="space-between" mb={4}>
-                                <Text size="sm" c="rose" fw={600}>Hard</Text>
+                                <Text size="sm" c={isDark ? 'rose' : '#e03131'} fw={600}>Hard</Text>
                                 <Text size="sm">{stats.difficultyCount.Hard}</Text>
                             </Group>
                             <Progress
                                 value={stats.total ? (stats.difficultyCount.Hard / stats.total) * 100 : 0}
-                                color="rose"
+                                color={isDark ? 'rose' : 'red'}
                                 size="sm"
                             />
                         </div>
@@ -232,7 +233,7 @@ export function StatsView({ cards }: StatsViewProps) {
                                 key={tag}
                                 size="lg"
                                 variant="light"
-                                color="ice"
+                                color={isDark ? 'ice' : 'blue'}
                                 style={{ textTransform: 'none' }}
                             >
                                 {tag} ({count})

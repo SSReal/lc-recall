@@ -84,8 +84,8 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
     const getDifficultyColor = (diff?: ProblemDifficulty) => {
         switch (diff) {
             case 'Easy': return 'teal';
-            case 'Medium': return 'ice';
-            case 'Hard': return 'rose';
+            case 'Medium': return isDark ? 'ice' : 'blue';
+            case 'Hard': return isDark ? 'rose' : 'red';
             default: return 'gray';
         }
     };
@@ -98,7 +98,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                 </Text>
                 <Button
                     onClick={onAddCard}
-                    style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                    style={{ background: isDark ? '#a9cef4' : '#1971c2', color: isDark ? '#040f0f' : '#ffffff', fontWeight: 600, border: 'none' }}
                 >
                     + Add Flashcard
                 </Button>
@@ -111,8 +111,9 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                 withBorder
                 mb="lg"
                 style={{
-                    background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
-                    borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+                    background: isDark ? 'var(--mantine-color-dark-6)' : '#ffffff',
+                    borderColor: isDark ? 'var(--mantine-color-dark-4)' : '#e2e8f0',
+                    boxShadow: isDark ? undefined : '0 1px 3px rgba(0, 0, 0, 0.04)'
                 }}
             >
                 <Group gap="sm" wrap="wrap">
@@ -185,11 +186,12 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                     withBorder
                     ta="center"
                     style={{
-                        background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
-                        borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+                        background: isDark ? 'var(--mantine-color-dark-6)' : '#ffffff',
+                        borderColor: isDark ? 'var(--mantine-color-dark-4)' : '#e2e8f0',
+                        boxShadow: isDark ? undefined : '0 1px 3px rgba(0, 0, 0, 0.04)'
                     }}
                 >
-                    <Text c="dimmed">No flashcards found matching your filters.</Text>
+                    <Text c={isDark ? 'dimmed' : '#64748b'}>No flashcards found matching your filters.</Text>
                 </Paper>
             ) : (
                 <Paper
@@ -197,8 +199,9 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                     withBorder
                     style={{
                         overflowX: 'auto',
-                        background: isDark ? 'var(--mantine-color-dark-6)' : 'white',
-                        borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+                        background: isDark ? 'var(--mantine-color-dark-6)' : '#ffffff',
+                        borderColor: isDark ? 'var(--mantine-color-dark-4)' : '#e2e8f0',
+                        boxShadow: isDark ? undefined : '0 1px 3px rgba(0, 0, 0, 0.04)'
                     }}
                 >
                     <Table highlightOnHover verticalSpacing="sm">
@@ -276,13 +279,13 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                                             </Group>
                                         </Table.Td>
 
-                                        <Table.Td>
+                                        <Table.Td style={{ whiteSpace: 'nowrap' }}>
                                             {isDue ? (
-                                                <Badge size="sm" color="rose" variant="filled">
+                                                <Badge size="sm" color={isDark ? 'rose' : 'red'} variant="filled" style={{ whiteSpace: 'nowrap' }}>
                                                     Due Now
                                                 </Badge>
                                             ) : (
-                                                <Badge size="sm" color="ice" variant="light">
+                                                <Badge size="sm" color={isDark ? 'ice' : 'blue'} variant="light" style={{ whiteSpace: 'nowrap' }}>
                                                     in {formatInterval(dueAt)}
                                                 </Badge>
                                             )}
@@ -338,7 +341,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
 
             {totalPages > 1 && (
                 <Group justify="center" mt="lg">
-                    <Pagination total={totalPages} value={page} onChange={setPage} color="ice" />
+                    <Pagination total={totalPages} value={page} onChange={setPage} color={isDark ? 'ice' : 'blue'} />
                 </Group>
             )}
 
@@ -349,6 +352,11 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                 title={viewingCard?.title || 'Flashcard Details'}
                 size="lg"
                 centered
+                styles={{
+                    content: {
+                        backgroundColor: isDark ? '#071314' : '#ffffff'
+                    }
+                }}
             >
                 {viewingCard && (
                     <Stack gap="md">
@@ -371,7 +379,8 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     size="sm"
-                                    c="#a9cef4"
+                                    c={isDark ? '#a9cef4' : '#1971c2'}
+                                    style={{ fontWeight: 600 }}
                                 >
                                     Open in LeetCode ↗
                                 </Anchor>
@@ -383,11 +392,11 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                             p="md"
                             style={{
                                 borderRadius: 8,
-                                background: isDark ? '#061213' : '#f8f9fa',
-                                border: isDark ? '1px solid #162329' : '1px solid #e9ecef'
+                                background: isDark ? '#061213' : '#f8fafc',
+                                border: isDark ? '1px solid #162329' : '1px solid #e2e8f0'
                             }}
                         >
-                            <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : 'dimmed'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                            <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#64748b'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
                                 Problem Description
                             </Text>
                             <MarkdownRenderer content={viewingCard.question} />
@@ -398,14 +407,14 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                             p="md"
                             style={{
                                 borderRadius: 8,
-                                borderLeft: '4px solid #a9cef4',
-                                background: isDark ? '#081414' : '#f8f9fa',
-                                borderTop: isDark ? '1px solid #162329' : '1px solid #e9ecef',
-                                borderRight: isDark ? '1px solid #162329' : '1px solid #e9ecef',
-                                borderBottom: isDark ? '1px solid #162329' : '1px solid #e9ecef'
+                                borderLeft: isDark ? '4px solid #a9cef4' : '4px solid #1971c2',
+                                background: isDark ? '#081414' : '#f8fafc',
+                                borderTop: isDark ? '1px solid #162329' : '1px solid #e2e8f0',
+                                borderRight: isDark ? '1px solid #162329' : '1px solid #e2e8f0',
+                                borderBottom: isDark ? '1px solid #162329' : '1px solid #e2e8f0'
                             }}
                         >
-                            <Text size="xs" fw={700} c="#a9cef4" tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                            <Text size="xs" fw={700} c={isDark ? '#a9cef4' : '#1971c2'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
                                 Intuition & Approach
                             </Text>
                             <MarkdownRenderer content={viewingCard.answer} />
@@ -415,12 +424,12 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                         {(viewingCard.timeComplexity || viewingCard.spaceComplexity) && (
                             <Group gap="sm">
                                 {viewingCard.timeComplexity && (
-                                    <Badge size="md" variant="light" color="ice">
+                                    <Badge size="md" variant="light" color={isDark ? 'ice' : 'blue'}>
                                         Time: {viewingCard.timeComplexity}
                                     </Badge>
                                 )}
                                 {viewingCard.spaceComplexity && (
-                                    <Badge size="md" variant="light" color="gray" style={{ color: isDark ? '#7ea0b7' : undefined }}>
+                                    <Badge size="md" variant="light" color="gray" style={{ color: isDark ? '#7ea0b7' : '#475569' }}>
                                         Space: {viewingCard.spaceComplexity}
                                     </Badge>
                                 )}
@@ -430,7 +439,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                         {/* Code Snippet */}
                         {viewingCard.codeSnippet && (
                             <div>
-                                <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : 'dimmed'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                                <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : '#64748b'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
                                     Optimal Implementation
                                 </Text>
                                 <CodeBlock code={viewingCard.codeSnippet} maxHeight={300} />
@@ -446,7 +455,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                             </Button>
                             <Button
                                 leftSection={<IconPencil size={15} />}
-                                style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                                style={{ background: isDark ? '#a9cef4' : '#1971c2', color: isDark ? '#040f0f' : '#ffffff', fontWeight: 600, border: 'none' }}
                                 onClick={() => {
                                     const cardToEdit = viewingCard;
                                     setViewingCard(null);

@@ -6,7 +6,8 @@ import {
     Textarea,
     Text,
     Divider,
-    Alert
+    Alert,
+    useMantineColorScheme
 } from '@mantine/core';
 import type { Flashcard } from '../../types/flashcard';
 import { exportFlashcardsJSON, importFlashcardsJSON } from '../../lib/storage';
@@ -28,6 +29,9 @@ export function ImportExportModal({
     const [jsonInput, setJsonInput] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+    const { colorScheme } = useMantineColorScheme();
+    const isDark = colorScheme === 'dark';
 
     const handleExport = () => {
         const json = exportFlashcardsJSON(cards);
@@ -76,6 +80,11 @@ export function ImportExportModal({
             title="Backup, Restore & Settings"
             size="md"
             centered
+            styles={{
+                content: {
+                    backgroundColor: isDark ? '#071314' : '#ffffff'
+                }
+            }}
         >
             <Stack gap="md">
                 {error && (
@@ -93,7 +102,7 @@ export function ImportExportModal({
                     <Text fw={600} size="sm" mb={4}>
                         Export Backup
                     </Text>
-                    <Text size="xs" c="dimmed" mb="sm">
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mb="sm">
                         Download all your flashcards, notes, and FSRS review history as a JSON file.
                     </Text>
                     <Button variant="default" onClick={handleExport} fullWidth>
@@ -107,7 +116,7 @@ export function ImportExportModal({
                     <Text fw={600} size="sm" mb={4}>
                         Import Deck
                     </Text>
-                    <Text size="xs" c="dimmed" mb="sm">
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mb="sm">
                         Paste a previously exported JSON backup to load your cards.
                     </Text>
                     <Textarea
@@ -122,7 +131,7 @@ export function ImportExportModal({
                         onClick={handleImport}
                         fullWidth
                         disabled={!jsonInput.trim()}
-                        style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                        style={{ background: isDark ? '#a9cef4' : '#1971c2', color: isDark ? '#040f0f' : '#ffffff', fontWeight: 600, border: 'none' }}
                     >
                         Import Flashcards
                     </Button>
@@ -131,13 +140,13 @@ export function ImportExportModal({
                 <Divider my="xs" />
 
                 <div>
-                    <Text fw={600} size="sm" mb={4} c="rose">
+                    <Text fw={600} size="sm" mb={4} c={isDark ? 'rose' : '#e03131'}>
                         Reset Deck
                     </Text>
-                    <Text size="xs" c="dimmed" mb="sm">
+                    <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mb="sm">
                         Restore the default curated LeetCode Blind 75 starter deck.
                     </Text>
-                    <Button variant="outline" color="rose" onClick={handleResetDefault} fullWidth>
+                    <Button variant="outline" color={isDark ? 'rose' : 'red'} onClick={handleResetDefault} fullWidth>
                         Reset to Starter Deck
                     </Button>
                 </div>

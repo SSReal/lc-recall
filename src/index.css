@@ -5,10 +5,20 @@ body,
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #040f0f;
-  color: #eef4fb;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-mantine-color-scheme="dark"] body,
+[data-mantine-color-scheme="dark"] #root {
+  background-color: #040f0f;
+  color: #eef4fb;
+}
+
+[data-mantine-color-scheme="light"] body,
+[data-mantine-color-scheme="light"] #root {
+  background-color: #f8fafc;
+  color: #1e293b;
 }
 
 /* Custom scrollbars based on Coolors palette */
@@ -19,12 +29,19 @@ body,
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-::-webkit-scrollbar-thumb {
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
   background: #26353e;
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: #597081;
+}
+[data-mantine-color-scheme="light"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+[data-mantine-color-scheme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* ==========================================================================
@@ -286,29 +303,31 @@ body,
 }
 
 [data-mantine-color-scheme="light"] .markdown-body blockquote {
-  background: #f8f9fa;
-  color: #495057;
+  background: #f1f5f9;
+  border-left-color: #1971c2;
+  color: #334155;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body :not(pre) > code {
-  background: rgba(0, 0, 0, 0.06);
-  color: #1c6ca1;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #e2e8f0;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body a {
-  color: #1d6fba;
+  color: #1971c2;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body table,
 [data-mantine-color-scheme="light"] .markdown-body th,
 [data-mantine-color-scheme="light"] .markdown-body td {
-  border-color: #e5e7eb;
+  border-color: #e2e8f0;
+  color: #1e293b;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body thead {
-  background: #f3f4f6;
-  border-bottom-color: #d1d5db;
+  background: #f1f5f9;
+  border-bottom-color: #cbd5e1;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body hr {

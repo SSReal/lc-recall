@@ -103,7 +103,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                                 { label: 'Hard', value: 'Hard' }
                             ]}
                             color={
-                                difficulty === 'Easy' ? 'teal' : difficulty === 'Medium' ? 'ice' : 'rose'
+                                difficulty === 'Easy' ? 'teal' : difficulty === 'Medium' ? (isDark ? 'ice' : 'blue') : (isDark ? 'rose' : 'red')
                             }
                         />
                     </div>
@@ -156,14 +156,14 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         style={{
                             borderRadius: 8,
                             border: isDark ? '1px solid #1e2f38' : '1px solid #e2e8f0',
-                            background: isDark ? '#061213' : '#f8f9fa',
+                            background: isDark ? '#061213' : '#f8fafc',
                             minHeight: 88
                         }}
                     >
                         {question.trim() ? (
                             <MarkdownRenderer content={question} />
                         ) : (
-                            <Text size="sm" c="dimmed" fs="italic">
+                            <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fs="italic">
                                 Nothing to preview. Type markdown in the Write tab.
                             </Text>
                         )}
@@ -202,14 +202,14 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         style={{
                             borderRadius: 8,
                             border: isDark ? '1px solid #1e2f38' : '1px solid #e2e8f0',
-                            background: isDark ? '#061213' : '#f8f9fa',
+                            background: isDark ? '#061213' : '#f8fafc',
                             minHeight: 110
                         }}
                     >
                         {answer.trim() ? (
                             <MarkdownRenderer content={answer} />
                         ) : (
-                            <Text size="sm" c="dimmed" fs="italic">
+                            <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fs="italic">
                                 Nothing to preview. Type markdown in the Write tab.
                             </Text>
                         )}
@@ -271,10 +271,10 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                                 style={{
                                     borderRadius: 8,
                                     border: isDark ? '1px solid #1e2f38' : '1px solid #e2e8f0',
-                                    background: isDark ? '#061213' : '#f8f9fa'
+                                    background: isDark ? '#061213' : '#f8fafc'
                                 }}
                             >
-                                <Text size="sm" c="dimmed" fs="italic">
+                                <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fs="italic">
                                     No code snippet entered yet.
                                 </Text>
                             </Box>
@@ -291,7 +291,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                     onClick={handleSave}
                     loading={isSaving}
                     disabled={!question.trim() || !answer.trim()}
-                    style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                    style={{ background: isDark ? '#a9cef4' : '#1971c2', color: isDark ? '#040f0f' : '#ffffff', fontWeight: 600, border: 'none' }}
                 >
                     {initialCard ? 'Save Changes' : 'Create Card'}
                 </Button>
@@ -301,6 +301,9 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
 }
 
 export function CardModal({ opened, onClose, onSave, initialCard }: CardModalProps) {
+    const { colorScheme } = useMantineColorScheme();
+    const isDark = colorScheme === 'dark';
+
     return (
         <Modal
             opened={opened}
@@ -308,6 +311,11 @@ export function CardModal({ opened, onClose, onSave, initialCard }: CardModalPro
             title={initialCard ? 'Edit Flashcard' : 'Add New LeetCode Flashcard'}
             size="lg"
             centered
+            styles={{
+                content: {
+                    backgroundColor: isDark ? '#071314' : '#ffffff'
+                }
+            }}
         >
             <CardModalForm
                 key={initialCard ? initialCard.id : 'new-card'}

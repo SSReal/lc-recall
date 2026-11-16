@@ -35,8 +35,8 @@ export function CodeBlock({
             style={{
                 borderRadius: 8,
                 overflow: 'hidden',
-                border: isDark ? '1px solid #16242c' : '1px solid #e1e4e8',
-                background: isDark ? '#020909' : '#f6f8fa',
+                border: isDark ? '1px solid #16242c' : '1px solid #e2e8f0',
+                background: isDark ? '#020909' : '#f8fafc',
                 margin: '12px 0'
             }}
         >
@@ -47,14 +47,14 @@ export function CodeBlock({
                     px="sm"
                     py={6}
                     style={{
-                        background: isDark ? '#071314' : '#edf2f7',
+                        background: isDark ? '#071314' : '#f1f5f9',
                         borderBottom: isDark ? '1px solid #16242c' : '1px solid #e2e8f0'
                     }}
                 >
                     <Badge
                         size="xs"
                         variant="subtle"
-                        color="ice"
+                        color={isDark ? 'ice' : 'blue'}
                         style={{
                             fontWeight: 600,
                             letterSpacing: '0.4px',
@@ -78,7 +78,7 @@ export function CodeBlock({
                                             fontSize: 11,
                                             height: 22,
                                             fontWeight: 500,
-                                            color: copied ? undefined : (isDark ? '#7ea0b7' : '#597081')
+                                            color: copied ? undefined : (isDark ? '#7ea0b7' : '#64748b')
                                         }}
                                     >
                                         {copied ? '✓ Copied' : 'Copy'}
@@ -106,7 +106,7 @@ export function CodeBlock({
                         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
                         fontSize: 13.5,
                         lineHeight: 1.55,
-                        color: isDark ? '#e0effb' : '#24292e',
+                        color: isDark ? '#e0effb' : '#1e293b',
                         whiteSpace: 'pre',
                         wordBreak: 'normal',
                         tabSize: 4

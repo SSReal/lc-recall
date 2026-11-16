@@ -21,18 +21,18 @@ const theme = createTheme({
       '#040f0f', // 8: main body background (#040f0f)
       '#020909', // 9: deepest canvas & code blocks
     ],
-    // Ice Blue palette based on #a9cef4 and #7ea0b7
+    // Ice Blue palette based on #a9cef4 for dark mode and rich accessible blues for light mode
     ice: [
-      '#f2f8fd', // 0
-      '#e0effb', // 1
-      '#c7e2f8', // 2
-      '#a9cef4', // 3: #a9cef4 primary
-      '#8fbfe8', // 4
-      '#7ea0b7', // 5: #7ea0b7
-      '#658da7', // 6: primary button
-      '#597081', // 7: #597081
-      '#475b69', // 8
-      '#364551', // 9
+      '#f0f7ff', // 0: lightest background tint
+      '#e0effb', // 1: subtle highlight
+      '#c7e2f8', // 2: light badge border
+      '#a9cef4', // 3: #a9cef4 dark-mode ice accent
+      '#8fbfe8', // 4: mid ice
+      '#5c93bd', // 5: muted slate
+      '#1971c2', // 6: primary button & active elements (WCAG AA accessible)
+      '#1864ab', // 7: rich deep blue
+      '#144f88', // 8: high-contrast dark blue
+      '#0e3860', // 9: deepest blue text for light badges
     ],
     // Rose Ebony palette based on #875053
     rose: [
