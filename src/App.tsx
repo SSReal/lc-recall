@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Container, Loader, Center, Box, Text } from '@mantine/core';
+import { Container, Loader, Center, Box, Text, useMantineColorScheme } from '@mantine/core';
 import type { Flashcard } from '../types/flashcard';
 import { initializeFlashcards, saveFlashcards } from '../lib/storage';
 import { Header } from './components/Header';
@@ -11,6 +11,8 @@ import { ImportExportModal } from './components/ImportExportModal';
 import { LLMPromptImportModal } from './components/LLMPromptImportModal';
 
 export default function App() {
+    const { colorScheme } = useMantineColorScheme();
+    const isDark = colorScheme === 'dark';
     const [cards, setCards] = useState<Flashcard[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'review' | 'cards' | 'stats'>('review');
@@ -101,7 +103,7 @@ export default function App() {
         return (
             <Center style={{ height: '100vh', flexDirection: 'column', gap: 16 }}>
                 <Loader color="ice" size="lg" />
-                <Text size="sm" c="dimmed">
+                <Text size="sm" c={isDark ? "dimmed" : "#334155"} fw={500}>
                     Initializing LeetCode Recall & FSRS Scheduler...
                 </Text>
             </Center>

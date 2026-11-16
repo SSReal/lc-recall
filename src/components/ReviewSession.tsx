@@ -135,7 +135,7 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                 <Title order={2} mb="xs">
                     {reviewedCount > 0 ? "Review Session Complete!" : "All Caught Up!"}
                 </Title>
-                <Text c="dimmed" mb="lg">
+                <Text c={isDark ? "dimmed" : "#334155"} fw={500} mb="lg">
                     {reviewedCount > 0
                         ? `Great work! You reviewed ${reviewedCount} card${reviewedCount > 1 ? 's' : ''} in this session.`
                         : "There are no flashcards due for review right now."}

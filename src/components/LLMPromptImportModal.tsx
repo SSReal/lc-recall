@@ -208,7 +208,7 @@ export function LLMPromptImportModal({
                 <Tabs.Panel value="prompt">
                     <Stack gap="md">
                         <div>
-                            <Text size="sm" c="dimmed" mb="xs">
+                            <Text size="sm" c={isDark ? "dimmed" : "#1e293b"} fw={500} mb="xs">
                                 Enter a LeetCode or Codeforces problem URL. Customize your prompt parameters below, copy the prompt into any LLM (ChatGPT, Claude, Gemini, DeepSeek), and paste the result into the Import tab.
                             </Text>
 
@@ -309,6 +309,12 @@ export function LLMPromptImportModal({
                                         { label: 'Deep Dive', value: 'deep' }
                                     ]}
                                     color="ice"
+                                    styles={{
+                                        label: {
+                                            color: isDark ? undefined : '#0f172a',
+                                            fontWeight: 600
+                                        }
+                                    }}
                                 />
                             </Grid.Col>
 
@@ -328,6 +334,12 @@ export function LLMPromptImportModal({
                                                 { label: 'Custom', value: 'custom' }
                                             ]}
                                             color="ice"
+                                            styles={{
+                                                label: {
+                                                    color: isDark ? undefined : '#0f172a',
+                                                    fontWeight: 600
+                                                }
+                                            }}
                                         />
                                     </Box>
 
@@ -395,7 +407,7 @@ export function LLMPromptImportModal({
                         </div>
 
                         <Group justify="space-between" mt="xs">
-                            <Text size="xs" c="dimmed">
+                            <Text size="xs" c={isDark ? "dimmed" : "#334155"} fw={500}>
                                 Works with Claude 3.5 Sonnet, ChatGPT, Gemini, DeepSeek, or local LLMs.
                             </Text>
 
@@ -460,7 +472,7 @@ export function LLMPromptImportModal({
                             <Text fw={600} size="sm" mb={4}>
                                 Paste LLM JSON Response
                             </Text>
-                            <Text size="xs" c="dimmed" mb="xs">
+                            <Text size="xs" c={isDark ? "dimmed" : "#1e293b"} fw={500} mb="xs">
                                 Paste the exact output from your LLM below. Markdown fences (```json ... ```) and conversational wrapping will be automatically parsed and cleaned.
                             </Text>
 
@@ -539,7 +551,7 @@ export function LLMPromptImportModal({
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 size="xs"
-                                                                c="dimmed"
+                                                                c={isDark ? "dimmed" : "#1971c2"}
                                                             >
                                                                 ↗ Link
                                                             </Anchor>

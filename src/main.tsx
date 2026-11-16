@@ -47,6 +47,19 @@ const theme = createTheme({
       '#593436', // 8
       '#442728', // 9
     ],
+    // High-contrast Gray palette for crisp text, placeholders and borders in light mode
+    gray: [
+      '#f8fafc', // 0: lightest slate background
+      '#f1f5f9', // 1: subtle card background
+      '#e2e8f0', // 2: light border
+      '#cbd5e1', // 3: standard border
+      '#94a3b8', // 4: muted icons
+      '#475569', // 5: placeholders in light mode (contrast 4.7:1 - WCAG AA compliant)
+      '#334155', // 6: dimmed text in light mode (contrast 7.8:1 - WCAG AAA compliant)
+      '#1e293b', // 7: segmented control label / secondary text
+      '#0f172a', // 8: primary text
+      '#020617', // 9: deepest slate
+    ],
   },
   defaultRadius: 'md',
   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
