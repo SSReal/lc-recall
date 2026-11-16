@@ -21,7 +21,7 @@ import type { Flashcard, ProblemDifficulty } from '../../types/flashcard';
 import { formatInterval } from '../../lib/fsrs';
 import { MarkdownRenderer } from './common/MarkdownRenderer';
 import { CodeBlock } from './common/CodeBlock';
-import { IconPencil, IconTrash, IconExternalLink } from './common/Icons';
+import { IconPencil, IconTrash, IconExternalLink } from '@tabler/icons-react';
 
 interface CardListProps {
     cards: Flashcard[];

@@ -126,7 +126,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
             />
 
             {/* Question / Problem Description with Markdown Preview */}
-            <div>
+            <Box>
                 <Group justify="space-between" align="center" mb={6}>
                     <Text size="sm" fw={500}>
                         Question / Problem Description <span style={{ color: '#fa5252' }}>*</span>
@@ -169,10 +169,10 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         )}
                     </Box>
                 )}
-            </div>
+            </Box>
 
             {/* Solution / Approach / Intuition with Markdown Preview */}
-            <div>
+            <Box>
                 <Group justify="space-between" align="center" mb={6}>
                     <Text size="sm" fw={500}>
                         Solution / Approach / Intuition <span style={{ color: '#fa5252' }}>*</span>
@@ -215,7 +215,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         )}
                     </Box>
                 )}
-            </div>
+            </Box>
 
             <Grid>
                 <Grid.Col span={{ base: 12, sm: 6 }}>
@@ -237,7 +237,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
             </Grid>
 
             {/* Code Snippet with Syntax Preview */}
-            <div>
+            <Box>
                 <Group justify="space-between" align="center" mb={6}>
                     <Text size="sm" fw={500}>
                         Code Snippet / Implementation (Optional)
@@ -281,7 +281,7 @@ function CardModalForm({ initialCard, onClose, onSave }: CardModalFormProps) {
                         )}
                     </Box>
                 )}
-            </div>
+            </Box>
 
             <Group justify="flex-end" mt="md">
                 <Button variant="default" onClick={onClose}>
