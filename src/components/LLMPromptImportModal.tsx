@@ -23,6 +23,8 @@ import {
     useMantineColorScheme
 } from '@mantine/core';
 import type { Flashcard, ProblemDifficulty } from '../../types/flashcard';
+import { CodeBlock } from './common/CodeBlock';
+import { MarkdownRenderer } from './common/MarkdownRenderer';
 import {
     generateLLMPrompt,
     parseLLMFlashcardResponse,
@@ -568,21 +570,17 @@ export function LLMPromptImportModal({
                                             </Group>
 
                                             <Box mb="xs">
-                                                <Text size="xs" fw={600} c="dimmed">
+                                                <Text size="xs" fw={600} c="dimmed" mb={2}>
                                                     Question:
                                                 </Text>
-                                                <Text size="xs" style={{ whiteSpace: 'pre-wrap' }}>
-                                                    {draft.question}
-                                                </Text>
+                                                <MarkdownRenderer content={draft.question} />
                                             </Box>
 
                                             <Box mb="xs">
-                                                <Text size="xs" fw={600} c="dimmed">
+                                                <Text size="xs" fw={600} c="dimmed" mb={2}>
                                                     Answer / Intuition:
                                                 </Text>
-                                                <Text size="xs" style={{ whiteSpace: 'pre-wrap' }}>
-                                                    {draft.answer}
-                                                </Text>
+                                                <MarkdownRenderer content={draft.answer} />
                                             </Box>
 
                                             {draft.codeSnippet && (
@@ -590,21 +588,11 @@ export function LLMPromptImportModal({
                                                     <Text size="xs" fw={600} c="dimmed" mb={2}>
                                                         Code Snippet:
                                                     </Text>
-                                                    <Paper
-                                                        p="xs"
-                                                        radius="sm"
-                                                        withBorder
-                                                        style={{
-                                                            background: isDark ? '#020909' : '#f8f9fa',
-                                                            fontFamily: 'monospace',
-                                                            fontSize: 11,
-                                                            maxHeight: 120,
-                                                            overflowY: 'auto',
-                                                            whiteSpace: 'pre-wrap'
-                                                        }}
-                                                    >
-                                                        {draft.codeSnippet}
-                                                    </Paper>
+                                                    <CodeBlock
+                                                        code={draft.codeSnippet}
+                                                        maxHeight={160}
+                                                        showHeader={false}
+                                                    />
                                                 </Box>
                                             )}
                                         </Paper>
