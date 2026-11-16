@@ -203,34 +203,65 @@ export function normalizeDifficulty(diff?: unknown): ProblemDifficulty {
     return 'Medium';
 }
 
+export interface ComplexityInfo {
+    clean?: string;
+    explanation?: string;
+}
+
 /**
- * Sanitizes and cleans complexity strings to ensure they remain concise Big-O notation,
- * stripping extraneous sentences or paragraphs if the LLM leaked explanations.
+ * Extracts a concise Big-O expression for UI display and isolates any attached explanatory text
+ * so that no detailed rationale is lost.
  */
-export function cleanComplexity(raw?: unknown): string | undefined {
-    if (typeof raw !== 'string') return undefined;
+export function extractComplexityAndExplanation(raw?: unknown): ComplexityInfo {
+    if (typeof raw !== 'string') return {};
     const trimmed = raw.trim();
-    if (!trimmed) return undefined;
+    if (!trimmed) return {};
 
     // If string has a clear Big-O pattern at the start (e.g. O(n), O(log n), O(1), O(V+E))
-    const bigOMatch = trimmed.match(/^([O\u0398\u03A9]\s*\([^)]+\)|[O\u0398\u03A9]\s*\d+)/i);
+    const bigOMatch = trimmed.match(/^([O\u0398\u03A9]\s*\([^)]+\)|[O\u0398\u03A9]\s*\d+)(.*)$/i);
     if (bigOMatch) {
-        // If there is extra explanatory text following the Big-O expression, extract just the Big-O
-        if (trimmed.length > 25 || trimmed.includes(' - ') || trimmed.includes(': ') || trimmed.includes(', ')) {
-            return bigOMatch[1].replace(/\s+/g, '');
-        }
+        const clean = bigOMatch[1].trim();
+        const remainder = bigOMatch[2].trim();
+
+        // Clean leading separators from remainder: " - ", ": ", ", ", "where ...", "(...)"
+        const cleanRemainder = remainder
+            .replace(/^(\s*[-:;,]\s*|\s*where\s*|\s*\(\s*)/i, '')
+            .replace(/\)\s*$/, '')
+            .trim();
+
+        const explanation = cleanRemainder.length > 0 ? cleanRemainder : undefined;
+        return { clean, explanation };
     }
 
     // If it has separators like " - " or ": "
     if (trimmed.includes(' - ') || trimmed.includes(': ')) {
-        const firstPart = trimmed.split(/ - |: /)[0].trim();
-        if (/^[O\u0398\u03A9]/i.test(firstPart) && firstPart.length <= 25) {
-            return firstPart;
+        const parts = trimmed.split(/ - |: /);
+        const first = parts[0].trim();
+        const rest = parts.slice(1).join(' - ').trim();
+        if (/^[O\u0398\u03A9]/i.test(first) && first.length <= 25) {
+            return {
+                clean: first,
+                explanation: rest.length > 0 ? rest : undefined
+            };
         }
     }
 
-    // Limit maximum length to prevent paragraph leaks
-    return trimmed.length > 30 ? trimmed.slice(0, 30).trim() : trimmed;
+    // Limit maximum length to prevent paragraph leaks into badge fields
+    if (trimmed.length > 25) {
+        return {
+            clean: trimmed.slice(0, 25).trim(),
+            explanation: trimmed
+        };
+    }
+
+    return { clean: trimmed };
+}
+
+/**
+ * Sanitizes complexity strings to ensure they remain concise Big-O notation.
+ */
+export function cleanComplexity(raw?: unknown): string | undefined {
+    return extractComplexityAndExplanation(raw).clean;
 }
 
 /**
@@ -348,8 +379,21 @@ export function parseLLMFlashcardResponse(
                 .map(t => (t as string).trim().slice(0, 30));
         }
 
-        const timeComplexity = cleanComplexity(cardObj.timeComplexity);
-        const spaceComplexity = cleanComplexity(cardObj.spaceComplexity);
+        const timeInfo = extractComplexityAndExplanation(cardObj.timeComplexity);
+        const spaceInfo = extractComplexityAndExplanation(cardObj.spaceComplexity);
+
+        // Preserve any explanatory rationale in answer notes so information is never lost
+        let finalAnswer = answer;
+        const complexityNotes: string[] = [];
+        if (timeInfo.explanation && !finalAnswer.includes(timeInfo.explanation)) {
+            complexityNotes.push(`- Time (${timeInfo.clean || 'Complexity'}): ${timeInfo.explanation}`);
+        }
+        if (spaceInfo.explanation && !finalAnswer.includes(spaceInfo.explanation)) {
+            complexityNotes.push(`- Space (${spaceInfo.clean || 'Complexity'}): ${spaceInfo.explanation}`);
+        }
+        if (complexityNotes.length > 0) {
+            finalAnswer = `${finalAnswer}\n\n**Complexity Notes:**\n${complexityNotes.join('\n')}`;
+        }
 
         const codeSnippet = typeof cardObj.codeSnippet === 'string' && cardObj.codeSnippet.trim()
             ? cardObj.codeSnippet.trim()
@@ -359,11 +403,11 @@ export function parseLLMFlashcardResponse(
             title,
             difficulty,
             question,
-            answer,
+            answer: finalAnswer,
             url: cardUrl,
             tags,
-            timeComplexity,
-            spaceComplexity,
+            timeComplexity: timeInfo.clean,
+            spaceComplexity: spaceInfo.clean,
             codeSnippet
         };
     });

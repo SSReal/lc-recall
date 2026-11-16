@@ -6,7 +6,8 @@ import {
     parseLLMFlashcardResponse,
     convertDraftsToFlashcards,
     normalizeDifficulty,
-    cleanComplexity
+    cleanComplexity,
+    extractComplexityAndExplanation
 } from '../lib/promptGenerator.ts';
 
 describe('promptGenerator: detectPlatformAndSlug', () => {
@@ -174,7 +175,7 @@ Hope this helps!`;
         assert.equal(drafts[0].title, 'Watermelon CF 4A');
     });
 
-    test('cleans verbose explanations from complexity fields during parsing', () => {
+    test('cleans complexity fields and preserves explanations in answer notes', () => {
         const verbose = JSON.stringify([
             {
                 title: '42. Trapping Rain Water - An In-Depth Look',
@@ -188,6 +189,9 @@ Hope this helps!`;
         const drafts = parseLLMFlashcardResponse(verbose);
         assert.equal(drafts[0].timeComplexity, 'O(n)');
         assert.equal(drafts[0].spaceComplexity, 'O(1)');
+        assert.match(drafts[0].answer, /\*\*Complexity Notes:\*\*/);
+        assert.match(drafts[0].answer, /Time \(O\(n\)\): where n is the number of elements/);
+        assert.match(drafts[0].answer, /Space \(O\(1\)\): auxiliary memory since only two pointer variables are used/);
     });
 
     test('throws error when JSON is invalid or empty', () => {
@@ -201,13 +205,19 @@ Hope this helps!`;
     });
 });
 
-describe('promptGenerator: cleanComplexity', () => {
-    test('extracts clean Big-O and trims long sentences', () => {
+describe('promptGenerator: cleanComplexity and extractComplexityAndExplanation', () => {
+    test('extracts clean Big-O and isolates explanation without losing details', () => {
+        const resTime = extractComplexityAndExplanation('O(n) - linear scan over nums');
+        assert.equal(resTime.clean, 'O(n)');
+        assert.equal(resTime.explanation, 'linear scan over nums');
+
+        const resSpace = extractComplexityAndExplanation('O(1): constant auxiliary space');
+        assert.equal(resSpace.clean, 'O(1)');
+        assert.equal(resSpace.explanation, 'constant auxiliary space');
+
         assert.equal(cleanComplexity('O(n)'), 'O(n)');
         assert.equal(cleanComplexity('O(n log n)'), 'O(n log n)');
         assert.equal(cleanComplexity('O(V + E)'), 'O(V + E)');
-        assert.equal(cleanComplexity('O(n) - linear scan over nums'), 'O(n)');
-        assert.equal(cleanComplexity('O(1): constant auxiliary space'), 'O(1)');
         assert.equal(cleanComplexity(''), undefined);
         assert.equal(cleanComplexity(undefined), undefined);
     });
