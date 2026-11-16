@@ -9,7 +9,6 @@ import {
     Stack,
     Progress,
     Box,
-    Code,
     Anchor,
     SimpleGrid,
     Card,
@@ -18,6 +17,8 @@ import {
 import type { Flashcard } from '../../types/flashcard';
 import { Rating, reviewFSRSCard, getNextIntervalEstimates } from '../../lib/fsrs';
 import type { Grade } from 'ts-fsrs';
+import { MarkdownRenderer } from './common/MarkdownRenderer';
+import { CodeBlock } from './common/CodeBlock';
 
 interface ReviewSessionProps {
     allCards: Flashcard[];
@@ -258,9 +259,7 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                     <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : 'dimmed'} tt="uppercase" mb={8} style={{ letterSpacing: '0.5px' }}>
                         Problem / Challenge
                     </Text>
-                    <Text style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7, fontSize: 15 }}>
-                        {currentCard.question}
-                    </Text>
+                    <MarkdownRenderer content={currentCard.question} />
                 </Card>
 
                 {/* Solution Reveal Button */}
@@ -299,9 +298,7 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                             <Text size="xs" fw={700} c="#a9cef4" tt="uppercase" mb={8} style={{ letterSpacing: '0.5px' }}>
                                 Intuition & Approach
                             </Text>
-                            <Text style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7, fontSize: 14.5 }}>
-                                {currentCard.answer}
-                            </Text>
+                            <MarkdownRenderer content={currentCard.answer} />
                         </Box>
 
                         {/* Complexity Badges */}
@@ -326,22 +323,7 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                                 <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : 'dimmed'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
                                     Optimal Implementation
                                 </Text>
-                                <Code
-                                    block
-                                    style={{
-                                        maxHeight: 300,
-                                        overflowY: 'auto',
-                                        background: isDark ? '#020909' : '#f8f9fa',
-                                        border: isDark ? '1px solid #16242c' : '1px solid #e9ecef',
-                                        borderRadius: 8,
-                                        padding: 14,
-                                        fontSize: 13.5,
-                                        lineHeight: 1.5,
-                                        color: isDark ? '#e0effb' : undefined
-                                    }}
-                                >
-                                    {currentCard.codeSnippet}
-                                </Code>
+                                <CodeBlock code={currentCard.codeSnippet} maxHeight={340} />
                             </div>
                         )}
 
