@@ -6,6 +6,7 @@ interface HeaderProps {
     dueCount: number;
     totalCount: number;
     onAddCard: () => void;
+    onOpenLLMImport: () => void;
     onOpenSettings: () => void;
 }
 
@@ -15,6 +16,7 @@ export function Header({
     dueCount,
     totalCount,
     onAddCard,
+    onOpenLLMImport,
     onOpenSettings
 }: HeaderProps) {
     const { colorScheme, setColorScheme } = useMantineColorScheme();
@@ -118,6 +120,20 @@ export function Header({
                 </Group>
 
                 <Group gap="xs">
+                    <Button
+                        variant="light"
+                        color="ice"
+                        size="sm"
+                        onClick={onOpenLLMImport}
+                        leftSection={<span style={{ fontSize: 13 }}>✨</span>}
+                        style={{
+                            fontWeight: 600,
+                            border: isDark ? '1px solid rgba(169, 206, 244, 0.35)' : '1px solid #c7e2f8'
+                        }}
+                    >
+                        AI Prompt Import
+                    </Button>
+
                     <Button
                         variant="filled"
                         size="sm"
