@@ -13,10 +13,15 @@ import {
     Anchor,
     Tooltip,
     Pagination,
+    Modal,
+    Stack,
     useMantineColorScheme
 } from '@mantine/core';
 import type { Flashcard, ProblemDifficulty } from '../../types/flashcard';
 import { formatInterval } from '../../lib/fsrs';
+import { MarkdownRenderer } from './common/MarkdownRenderer';
+import { CodeBlock } from './common/CodeBlock';
+import { IconPencil, IconTrash, IconExternalLink } from '@tabler/icons-react';
 
 interface CardListProps {
     cards: Flashcard[];
@@ -33,6 +38,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
     const [statusFilter, setStatusFilter] = useState<string>('all');
     const [selectedTag, setSelectedTag] = useState<string>('all');
     const [page, setPage] = useState(1);
+    const [viewingCard, setViewingCard] = useState<Flashcard | null>(null);
     const [now] = useState(() => Date.now());
     const pageSize = 10;
 
@@ -203,7 +209,7 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                                 <Table.Th>Tags</Table.Th>
                                 <Table.Th>Due / Status</Table.Th>
                                 <Table.Th>Reps</Table.Th>
-                                <Table.Th style={{ textAlign: 'right' }}>Actions</Table.Th>
+                                <Table.Th style={{ textAlign: 'right', width: 90, minWidth: 90 }}>Actions</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
@@ -214,7 +220,11 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                                 const isDue = dueAt.getTime() <= now;
 
                                 return (
-                                    <Table.Tr key={card.id}>
+                                    <Table.Tr
+                                        key={card.id}
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => setViewingCard(card)}
+                                    >
                                         <Table.Td>
                                             <Group gap="xs">
                                                 <Text fw={600} size="sm">
@@ -227,8 +237,10 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                                                         rel="noopener noreferrer"
                                                         size="xs"
                                                         c="dimmed"
+                                                        style={{ display: 'inline-flex', alignItems: 'center' }}
+                                                        onClick={(e) => e.stopPropagation()}
                                                     >
-                                                        ↗
+                                                        <IconExternalLink size={12} />
                                                     </Anchor>
                                                 )}
                                             </Group>
@@ -280,28 +292,38 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                                             <Text size="sm">{card.fsrs.reps || 0}</Text>
                                         </Table.Td>
 
-                                        <Table.Td style={{ textAlign: 'right' }}>
-                                            <Group justify="flex-end" gap="xs">
-                                                <Tooltip label="Edit Card">
+                                        <Table.Td style={{ textAlign: 'right', width: 90, minWidth: 90, whiteSpace: 'nowrap' }}>
+                                            <Group justify="flex-end" gap={4} wrap="nowrap" align="center" style={{ display: 'inline-flex' }}>
+                                                <Tooltip label="Edit Card" withArrow>
                                                     <ActionIcon
                                                         variant="subtle"
                                                         color="gray"
-                                                        onClick={() => onEditCard(card)}
+                                                        size="sm"
+                                                        radius="sm"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            onEditCard(card);
+                                                        }}
+                                                        aria-label="Edit Card"
                                                     >
-                                                        ✏️
+                                                        <IconPencil size={16} />
                                                     </ActionIcon>
                                                 </Tooltip>
-                                                <Tooltip label="Delete Card">
+                                                <Tooltip label="Delete Card" withArrow>
                                                     <ActionIcon
                                                         variant="subtle"
                                                         color="red"
-                                                        onClick={() => {
+                                                        size="sm"
+                                                        radius="sm"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
                                                             if (confirm(`Delete "${card.title || 'this card'}"?`)) {
                                                                 onDeleteCard(card.id);
                                                             }
                                                         }}
+                                                        aria-label="Delete Card"
                                                     >
-                                                        🗑️
+                                                        <IconTrash size={16} />
                                                     </ActionIcon>
                                                 </Tooltip>
                                             </Group>
@@ -319,6 +341,124 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                     <Pagination total={totalPages} value={page} onChange={setPage} color="ice" />
                 </Group>
             )}
+
+            {/* View Card Detail Modal with Markdown and Syntax Highlighting */}
+            <Modal
+                opened={Boolean(viewingCard)}
+                onClose={() => setViewingCard(null)}
+                title={viewingCard?.title || 'Flashcard Details'}
+                size="lg"
+                centered
+            >
+                {viewingCard && (
+                    <Stack gap="md">
+                        <Group justify="space-between" align="center" wrap="wrap">
+                            <Group gap="xs">
+                                {viewingCard.difficulty && (
+                                    <Badge size="sm" variant="light" color={getDifficultyColor(viewingCard.difficulty)}>
+                                        {viewingCard.difficulty}
+                                    </Badge>
+                                )}
+                                {viewingCard.tags?.map((tag) => (
+                                    <Badge key={tag} size="xs" variant="outline" color="gray">
+                                        #{tag}
+                                    </Badge>
+                                ))}
+                            </Group>
+                            {viewingCard.url && (
+                                <Anchor
+                                    href={viewingCard.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    size="sm"
+                                    c="#a9cef4"
+                                >
+                                    Open in LeetCode ↗
+                                </Anchor>
+                            )}
+                        </Group>
+
+                        {/* Problem Description */}
+                        <Box
+                            p="md"
+                            style={{
+                                borderRadius: 8,
+                                background: isDark ? '#061213' : '#f8f9fa',
+                                border: isDark ? '1px solid #162329' : '1px solid #e9ecef'
+                            }}
+                        >
+                            <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : 'dimmed'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                                Problem Description
+                            </Text>
+                            <MarkdownRenderer content={viewingCard.question} />
+                        </Box>
+
+                        {/* Intuition & Solution */}
+                        <Box
+                            p="md"
+                            style={{
+                                borderRadius: 8,
+                                borderLeft: '4px solid #a9cef4',
+                                background: isDark ? '#081414' : '#f8f9fa',
+                                borderTop: isDark ? '1px solid #162329' : '1px solid #e9ecef',
+                                borderRight: isDark ? '1px solid #162329' : '1px solid #e9ecef',
+                                borderBottom: isDark ? '1px solid #162329' : '1px solid #e9ecef'
+                            }}
+                        >
+                            <Text size="xs" fw={700} c="#a9cef4" tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                                Intuition & Approach
+                            </Text>
+                            <MarkdownRenderer content={viewingCard.answer} />
+                        </Box>
+
+                        {/* Complexity Badges */}
+                        {(viewingCard.timeComplexity || viewingCard.spaceComplexity) && (
+                            <Group gap="sm">
+                                {viewingCard.timeComplexity && (
+                                    <Badge size="md" variant="light" color="ice">
+                                        Time: {viewingCard.timeComplexity}
+                                    </Badge>
+                                )}
+                                {viewingCard.spaceComplexity && (
+                                    <Badge size="md" variant="light" color="gray" style={{ color: isDark ? '#7ea0b7' : undefined }}>
+                                        Space: {viewingCard.spaceComplexity}
+                                    </Badge>
+                                )}
+                            </Group>
+                        )}
+
+                        {/* Code Snippet */}
+                        {viewingCard.codeSnippet && (
+                            <div>
+                                <Text size="xs" fw={700} c={isDark ? '#7ea0b7' : 'dimmed'} tt="uppercase" mb={6} style={{ letterSpacing: '0.5px' }}>
+                                    Optimal Implementation
+                                </Text>
+                                <CodeBlock code={viewingCard.codeSnippet} maxHeight={300} />
+                            </div>
+                        )}
+
+                        <Group justify="flex-end" mt="sm">
+                            <Button
+                                variant="default"
+                                onClick={() => setViewingCard(null)}
+                            >
+                                Close
+                            </Button>
+                            <Button
+                                leftSection={<IconPencil size={15} />}
+                                style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                                onClick={() => {
+                                    const cardToEdit = viewingCard;
+                                    setViewingCard(null);
+                                    onEditCard(cardToEdit);
+                                }}
+                            >
+                                Edit Card
+                            </Button>
+                        </Group>
+                    </Stack>
+                )}
+            </Modal>
         </Box>
     );
 }
