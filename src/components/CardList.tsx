@@ -28,9 +28,10 @@ interface CardListProps {
     onEditCard: (card: Flashcard) => void;
     onDeleteCard: (id: string) => void;
     onAddCard: () => void;
+    onOpenLLMImport?: () => void;
 }
 
-export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardListProps) {
+export function CardList({ cards, onEditCard, onDeleteCard, onAddCard, onOpenLLMImport }: CardListProps) {
     const { colorScheme } = useMantineColorScheme();
     const isDark = colorScheme === 'dark';
     const [search, setSearch] = useState('');
@@ -96,12 +97,26 @@ export function CardList({ cards, onEditCard, onDeleteCard, onAddCard }: CardLis
                 <Text size="xl" fw={700}>
                     Problem Deck ({cards.length})
                 </Text>
-                <Button
-                    onClick={onAddCard}
-                    style={{ background: isDark ? '#a9cef4' : '#1971c2', color: isDark ? '#040f0f' : '#ffffff', fontWeight: 600, border: 'none' }}
-                >
-                    + Add Flashcard
-                </Button>
+                <Group gap="xs">
+                    {onOpenLLMImport && (
+                        <Button
+                            variant="light"
+                            color={isDark ? 'ice' : 'blue'}
+                            size="sm"
+                            onClick={onOpenLLMImport}
+                            leftSection={<span style={{ fontSize: 13 }}>✨</span>}
+                            style={{ fontWeight: 600 }}
+                        >
+                            AI Import
+                        </Button>
+                    )}
+                    <Button
+                        onClick={onAddCard}
+                        style={{ background: isDark ? '#a9cef4' : '#1971c2', color: isDark ? '#040f0f' : '#ffffff', fontWeight: 600, border: 'none' }}
+                    >
+                        + Add Flashcard
+                    </Button>
+                </Group>
             </Group>
 
             {/* Filter Bar */}

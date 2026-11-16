@@ -8,6 +8,7 @@ import { CardList } from './components/CardList';
 import { StatsView } from './components/StatsView';
 import { CardModal } from './components/CardModal';
 import { ImportExportModal } from './components/ImportExportModal';
+import { LLMPromptImportModal } from './components/LLMPromptImportModal';
 
 export default function App() {
     const [cards, setCards] = useState<Flashcard[]>([]);
@@ -19,6 +20,7 @@ export default function App() {
     const [isCardModalOpen, setIsCardModalOpen] = useState(false);
     const [editingCard, setEditingCard] = useState<Flashcard | null>(null);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isLLMImportOpen, setIsLLMImportOpen] = useState(false);
 
     // Initial load
     useEffect(() => {
@@ -77,6 +79,14 @@ export default function App() {
         saveFlashcards(newCards);
     };
 
+    const handleImportCards = (newCards: Flashcard[]) => {
+        setCards((prev) => {
+            const updated = [...newCards, ...prev];
+            saveFlashcards(updated);
+            return updated;
+        });
+    };
+
     const handleOpenEdit = (card: Flashcard) => {
         setEditingCard(card);
         setIsCardModalOpen(true);
@@ -106,6 +116,7 @@ export default function App() {
                 dueCount={dueCount}
                 totalCount={cards.length}
                 onAddCard={handleOpenAdd}
+                onOpenLLMImport={() => setIsLLMImportOpen(true)}
                 onOpenSettings={() => setIsSettingsOpen(true)}
             />
 
@@ -125,6 +136,7 @@ export default function App() {
                         onEditCard={handleOpenEdit}
                         onDeleteCard={handleDeleteCard}
                         onAddCard={handleOpenAdd}
+                        onOpenLLMImport={() => setIsLLMImportOpen(true)}
                     />
                 )}
 
@@ -141,11 +153,19 @@ export default function App() {
                 initialCard={editingCard}
             />
 
+            <LLMPromptImportModal
+                opened={isLLMImportOpen}
+                onClose={() => setIsLLMImportOpen(false)}
+                onImportCards={handleImportCards}
+                onNavigateTab={(tab) => setActiveTab(tab)}
+            />
+
             <ImportExportModal
                 opened={isSettingsOpen}
                 onClose={() => setIsSettingsOpen(false)}
                 cards={cards}
                 onCardsUpdated={handleCardsUpdated}
+                onOpenLLMImport={() => setIsLLMImportOpen(true)}
             />
         </Box>
     );

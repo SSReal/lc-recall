@@ -7,7 +7,8 @@ import {
     Text,
     Divider,
     Alert,
-    useMantineColorScheme
+    useMantineColorScheme,
+    Paper
 } from '@mantine/core';
 import type { Flashcard } from '../../types/flashcard';
 import { exportFlashcardsJSON, importFlashcardsJSON } from '../../lib/storage';
@@ -18,13 +19,15 @@ interface ImportExportModalProps {
     onClose: () => void;
     cards: Flashcard[];
     onCardsUpdated: (cards: Flashcard[]) => void;
+    onOpenLLMImport?: () => void;
 }
 
 export function ImportExportModal({
     opened,
     onClose,
     cards,
-    onCardsUpdated
+    onCardsUpdated,
+    onOpenLLMImport
 }: ImportExportModalProps) {
     const [jsonInput, setJsonInput] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -87,6 +90,37 @@ export function ImportExportModal({
             }}
         >
             <Stack gap="md">
+                {onOpenLLMImport && (
+                    <Paper
+                        p="sm"
+                        radius="md"
+                        withBorder
+                        style={{
+                            background: isDark ? 'rgba(169, 206, 244, 0.08)' : '#f0f7ff',
+                            borderColor: isDark ? 'rgba(169, 206, 244, 0.25)' : '#c7e2f8'
+                        }}
+                    >
+                        <Text fw={600} size="sm" mb={2}>
+                            ✨ AI Prompt Generator & Importer
+                        </Text>
+                        <Text size="xs" c={isDark ? 'dimmed' : '#64748b'} mb="xs">
+                            Generate flashcards directly from any LeetCode or Codeforces URL with a customized LLM prompt.
+                        </Text>
+                        <Button
+                            variant="light"
+                            color={isDark ? 'ice' : 'blue'}
+                            size="xs"
+                            fullWidth
+                            onClick={() => {
+                                onClose();
+                                onOpenLLMImport();
+                            }}
+                        >
+                            Open AI Prompt Importer
+                        </Button>
+                    </Paper>
+                )}
+
                 {error && (
                     <Alert color="red" title="Error">
                         {error}
