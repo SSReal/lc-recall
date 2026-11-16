@@ -158,8 +158,8 @@ export function LLMPromptImportModal({
                 <Group gap="xs" align="center">
                     <Box
                         style={{
-                            background: '#a9cef4',
-                            color: '#040f0f',
+                            background: isDark ? '#a9cef4' : '#1971c2',
+                            color: isDark ? '#040f0f' : '#ffffff',
                             borderRadius: 6,
                             padding: '2px 8px',
                             fontWeight: 800,
@@ -175,6 +175,11 @@ export function LLMPromptImportModal({
             }
             size="xl"
             centered
+            styles={{
+                content: {
+                    backgroundColor: isDark ? '#071314' : '#ffffff'
+                }
+            }}
         >
             <Tabs value={activeTab} onChange={setActiveTab}>
                 <Tabs.List mb="md">
@@ -203,7 +208,7 @@ export function LLMPromptImportModal({
                 <Tabs.Panel value="prompt">
                     <Stack gap="md">
                         <div>
-                            <Text size="sm" c="dimmed" mb="xs">
+                            <Text size="sm" c={isDark ? "dimmed" : "#1e293b"} fw={500} mb="xs">
                                 Enter a LeetCode or Codeforces problem URL. Customize your prompt parameters below, copy the prompt into any LLM (ChatGPT, Claude, Gemini, DeepSeek), and paste the result into the Import tab.
                             </Text>
 
@@ -239,29 +244,32 @@ export function LLMPromptImportModal({
 
                             {/* Quick example problem links */}
                             <Group gap={6} mt={6}>
-                                <Text size="xs" c="dimmed">
+                                <Text size="xs" c={isDark ? "dimmed" : "#0f172a"} fw={600}>
                                     Quick Examples:
                                 </Text>
                                 <Anchor
                                     size="xs"
+                                    c={isDark ? undefined : "#1971c2"}
                                     onClick={() => setUrl('https://leetcode.com/problems/two-sum/')}
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', fontWeight: 500 }}
                                 >
                                     LeetCode Two Sum
                                 </Anchor>
-                                <Text size="xs" c="dimmed">•</Text>
+                                <Text size="xs" c={isDark ? "dimmed" : "#64748b"}>•</Text>
                                 <Anchor
                                     size="xs"
+                                    c={isDark ? undefined : "#1971c2"}
                                     onClick={() => setUrl('https://leetcode.com/problems/trapping-rain-water/')}
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', fontWeight: 500 }}
                                 >
                                     Trapping Rain Water
                                 </Anchor>
-                                <Text size="xs" c="dimmed">•</Text>
+                                <Text size="xs" c={isDark ? "dimmed" : "#64748b"}>•</Text>
                                 <Anchor
                                     size="xs"
+                                    c={isDark ? undefined : "#1971c2"}
                                     onClick={() => setUrl('https://codeforces.com/problemset/problem/4/A')}
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer', fontWeight: 500 }}
                                 >
                                     Codeforces 4A (Watermelon)
                                 </Anchor>
@@ -301,6 +309,12 @@ export function LLMPromptImportModal({
                                         { label: 'Deep Dive', value: 'deep' }
                                     ]}
                                     color="ice"
+                                    styles={{
+                                        label: {
+                                            color: isDark ? undefined : '#0f172a',
+                                            fontWeight: 600
+                                        }
+                                    }}
                                 />
                             </Grid.Col>
 
@@ -320,6 +334,12 @@ export function LLMPromptImportModal({
                                                 { label: 'Custom', value: 'custom' }
                                             ]}
                                             color="ice"
+                                            styles={{
+                                                label: {
+                                                    color: isDark ? undefined : '#0f172a',
+                                                    fontWeight: 600
+                                                }
+                                            }}
                                         />
                                     </Box>
 
@@ -387,14 +407,14 @@ export function LLMPromptImportModal({
                         </div>
 
                         <Group justify="space-between" mt="xs">
-                            <Text size="xs" c="dimmed">
+                            <Text size="xs" c={isDark ? "dimmed" : "#334155"} fw={500}>
                                 Works with Claude 3.5 Sonnet, ChatGPT, Gemini, DeepSeek, or local LLMs.
                             </Text>
 
                             <Button
                                 rightSection="→"
                                 onClick={() => setActiveTab('import')}
-                                style={{ background: '#a9cef4', color: '#040f0f', fontWeight: 600, border: 'none' }}
+                                style={{ background: isDark ? '#a9cef4' : '#1971c2', color: isDark ? '#040f0f' : '#ffffff', fontWeight: 600, border: 'none' }}
                             >
                                 Next: Paste LLM Output
                             </Button>
@@ -452,7 +472,7 @@ export function LLMPromptImportModal({
                             <Text fw={600} size="sm" mb={4}>
                                 Paste LLM JSON Response
                             </Text>
-                            <Text size="xs" c="dimmed" mb="xs">
+                            <Text size="xs" c={isDark ? "dimmed" : "#1e293b"} fw={500} mb="xs">
                                 Paste the exact output from your LLM below. Markdown fences (```json ... ```) and conversational wrapping will be automatically parsed and cleaned.
                             </Text>
 
@@ -490,8 +510,8 @@ export function LLMPromptImportModal({
                                         loading={isImporting}
                                         size="sm"
                                         style={{
-                                            background: '#a9cef4',
-                                            color: '#040f0f',
+                                            background: isDark ? '#a9cef4' : '#1971c2',
+                                            color: isDark ? '#040f0f' : '#ffffff',
                                             fontWeight: 600,
                                             border: 'none'
                                         }}
@@ -508,8 +528,8 @@ export function LLMPromptImportModal({
                                             radius="md"
                                             withBorder
                                             style={{
-                                                background: isDark ? 'var(--mantine-color-dark-6)' : '#fff',
-                                                borderColor: isDark ? 'var(--mantine-color-dark-4)' : undefined
+                                                background: isDark ? 'var(--mantine-color-dark-6)' : '#ffffff',
+                                                borderColor: isDark ? 'var(--mantine-color-dark-4)' : '#e2e8f0'
                                             }}
                                         >
                                             <Group justify="space-between" align="flex-start" wrap="nowrap" mb="xs">
@@ -531,7 +551,7 @@ export function LLMPromptImportModal({
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 size="xs"
-                                                                c="dimmed"
+                                                                c={isDark ? "dimmed" : "#1971c2"}
                                                             >
                                                                 ↗ Link
                                                             </Anchor>
@@ -570,14 +590,14 @@ export function LLMPromptImportModal({
                                             </Group>
 
                                             <Box mb="xs">
-                                                <Text size="xs" fw={600} c="dimmed" mb={2}>
+                                                <Text size="xs" fw={700} c={isDark ? "dimmed" : "#0f172a"} mb={2}>
                                                     Question:
                                                 </Text>
                                                 <MarkdownRenderer content={draft.question} />
                                             </Box>
 
                                             <Box mb="xs">
-                                                <Text size="xs" fw={600} c="dimmed" mb={2}>
+                                                <Text size="xs" fw={700} c={isDark ? "dimmed" : "#0f172a"} mb={2}>
                                                     Answer / Intuition:
                                                 </Text>
                                                 <MarkdownRenderer content={draft.answer} />
@@ -585,7 +605,7 @@ export function LLMPromptImportModal({
 
                                             {draft.codeSnippet && (
                                                 <Box>
-                                                    <Text size="xs" fw={600} c="dimmed" mb={2}>
+                                                    <Text size="xs" fw={700} c={isDark ? "dimmed" : "#0f172a"} mb={2}>
                                                         Code Snippet:
                                                     </Text>
                                                     <CodeBlock
@@ -616,8 +636,8 @@ export function LLMPromptImportModal({
                                     loading={isImporting}
                                     size="sm"
                                     style={{
-                                        background: '#a9cef4',
-                                        color: '#040f0f',
+                                        background: isDark ? '#a9cef4' : '#1971c2',
+                                        color: isDark ? '#040f0f' : '#ffffff',
                                         fontWeight: 600,
                                         border: 'none'
                                     }}

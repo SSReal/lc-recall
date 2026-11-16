@@ -5,10 +5,93 @@ body,
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #040f0f;
-  color: #eef4fb;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-mantine-color-scheme="dark"] body,
+[data-mantine-color-scheme="dark"] #root {
+  background-color: #040f0f;
+  color: #eef4fb;
+}
+
+[data-mantine-color-scheme="light"] body,
+[data-mantine-color-scheme="light"] #root {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+:root[data-mantine-color-scheme="light"],
+[data-mantine-color-scheme="light"] {
+  --mantine-color-dimmed: #334155 !important;
+  --mantine-color-placeholder: #475569 !important;
+  --input-placeholder-color: #475569 !important;
+  --mantine-color-text: #0f172a !important;
+  --mantine-color-gray-outline: #334155 !important;
+  --mantine-color-gray-light-color: #0f172a !important;
+  --mantine-color-default-color: #0f172a !important;
+  --mantine-color-default-border: #cbd5e1 !important;
+}
+
+:root[data-mantine-color-scheme="light"] input::placeholder,
+:root[data-mantine-color-scheme="light"] textarea::placeholder,
+[data-mantine-color-scheme="light"] input::placeholder,
+[data-mantine-color-scheme="light"] textarea::placeholder,
+[data-mantine-color-scheme="light"] .mantine-Input-input::placeholder,
+[data-mantine-color-scheme="light"] .mantine-Textarea-input::placeholder {
+  color: #475569 !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Input-input,
+[data-mantine-color-scheme="light"] .mantine-Textarea-input,
+[data-mantine-color-scheme="light"] .mantine-Select-input {
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Input-input:focus,
+[data-mantine-color-scheme="light"] .mantine-Textarea-input:focus,
+[data-mantine-color-scheme="light"] .mantine-Select-input:focus {
+  border-color: #1971c2 !important;
+}
+
+/* Light mode SegmentedControl styling */
+[data-mantine-color-scheme="light"] .mantine-SegmentedControl-root,
+[data-mantine-color-scheme="light"] [class*="SegmentedControl-root"] {
+  background-color: #e2e8f0 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-SegmentedControl-label:not([data-active]),
+[data-mantine-color-scheme="light"] [class*="SegmentedControl-label"]:not([data-active]),
+[data-mantine-color-scheme="light"] [class*="segmentedControl"] label:not([data-active]) {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-SegmentedControl-label[data-active],
+[data-mantine-color-scheme="light"] [class*="SegmentedControl-label"][data-active] {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-table {
+  color: #0f172a;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-th {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #cbd5e1 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-td {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-mantine-color-scheme="light"] .mantine-Table-tr:hover {
+  background-color: #f1f5f9 !important;
 }
 
 /* Custom scrollbars based on Coolors palette */
@@ -19,12 +102,19 @@ body,
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-::-webkit-scrollbar-thumb {
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
   background: #26353e;
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: #597081;
+}
+[data-mantine-color-scheme="light"] ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+[data-mantine-color-scheme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* ==========================================================================
@@ -286,29 +376,31 @@ body,
 }
 
 [data-mantine-color-scheme="light"] .markdown-body blockquote {
-  background: #f8f9fa;
-  color: #495057;
+  background: #f1f5f9;
+  border-left-color: #1971c2;
+  color: #334155;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body :not(pre) > code {
-  background: rgba(0, 0, 0, 0.06);
-  color: #1c6ca1;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #e2e8f0;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body a {
-  color: #1d6fba;
+  color: #1971c2;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body table,
 [data-mantine-color-scheme="light"] .markdown-body th,
 [data-mantine-color-scheme="light"] .markdown-body td {
-  border-color: #e5e7eb;
+  border-color: #e2e8f0;
+  color: #1e293b;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body thead {
-  background: #f3f4f6;
-  border-bottom-color: #d1d5db;
+  background: #f1f5f9;
+  border-bottom-color: #cbd5e1;
 }
 
 [data-mantine-color-scheme="light"] .markdown-body hr {
