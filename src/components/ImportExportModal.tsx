@@ -7,6 +7,7 @@ import {
     Text,
     Divider,
     Alert,
+    Switch,
     useMantineColorScheme,
     Paper
 } from '@mantine/core';
@@ -32,6 +33,10 @@ export function ImportExportModal({
     const [jsonInput, setJsonInput] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [successMsg, setSuccessMsg] = useState<string | null>(null);
+    const [shuffleEnabled, setShuffleEnabled] = useState(() => {
+        const stored = localStorage.getItem('lc_recall_shuffle_enabled');
+        return stored === null ? true : stored === 'true';
+    });
 
     const { colorScheme } = useMantineColorScheme();
     const isDark = colorScheme === 'dark';
@@ -131,6 +136,24 @@ export function ImportExportModal({
                         {successMsg}
                     </Alert>
                 )}
+
+                <div>
+                    <Text fw={600} size="sm" mb={4}>
+                        Review Preferences
+                    </Text>
+                    <Switch
+                        label="Randomize & distribute cards"
+                        description="Shuffles cards and interleaves topics and difficulties during review sessions to prevent repetitive clustering"
+                        checked={shuffleEnabled}
+                        onChange={(e) => {
+                            const val = e.currentTarget.checked;
+                            setShuffleEnabled(val);
+                            localStorage.setItem('lc_recall_shuffle_enabled', String(val));
+                        }}
+                    />
+                </div>
+
+                <Divider my="xs" />
 
                 <div>
                     <Text fw={600} size="sm" mb={4}>

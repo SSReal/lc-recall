@@ -12,10 +12,14 @@ import {
     Anchor,
     SimpleGrid,
     Card,
+    ActionIcon,
+    Tooltip,
     useMantineColorScheme
 } from '@mantine/core';
+import { IconArrowsShuffle } from '@tabler/icons-react';
 import type { Flashcard } from '../../types/flashcard';
 import { Rating, reviewFSRSCard, getNextIntervalEstimates } from '../../lib/fsrs';
+import { distributeAndShuffleCards } from '../../lib/shuffle';
 import type { Grade } from 'ts-fsrs';
 import { MarkdownRenderer } from './common/MarkdownRenderer';
 import { CodeBlock } from './common/CodeBlock';
@@ -26,19 +30,38 @@ interface ReviewSessionProps {
     onBrowseCards: () => void;
 }
 
+function sortByDueTime(cards: Flashcard[]): Flashcard[] {
+    return [...cards].sort((a, b) => {
+        const timeA = a.fsrs.dueAt instanceof Date ? a.fsrs.dueAt.getTime() : new Date(a.fsrs.dueAt).getTime();
+        const timeB = b.fsrs.dueAt instanceof Date ? b.fsrs.dueAt.getTime() : new Date(b.fsrs.dueAt).getTime();
+        return timeA - timeB;
+    });
+}
+
+function prepareQueue(cards: Flashcard[], shouldShuffle: boolean): Flashcard[] {
+    return shouldShuffle ? distributeAndShuffleCards(cards) : sortByDueTime(cards);
+}
+
 export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewSessionProps) {
     const { colorScheme } = useMantineColorScheme();
     const isDark = colorScheme === 'dark';
     const [currentTime] = useState(() => Date.now());
+    const [shuffleEnabled, setShuffleEnabled] = useState(() => {
+        const stored = localStorage.getItem('lc_recall_shuffle_enabled');
+        return stored === null ? true : stored === 'true';
+    });
 
     // Cards due for review (dueAt <= currentTime or new cards)
     const [queue, setQueue] = useState<Flashcard[]>(() => {
-        return allCards.filter(card => {
+        const dueCards = allCards.filter(card => {
             const dueTime = card.fsrs.dueAt instanceof Date
                 ? card.fsrs.dueAt.getTime()
                 : new Date(card.fsrs.dueAt).getTime();
             return dueTime <= currentTime;
         });
+        const stored = localStorage.getItem('lc_recall_shuffle_enabled');
+        const shouldShuffle = stored === null ? true : stored === 'true';
+        return prepareQueue(dueCards, shouldShuffle);
     });
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,6 +73,36 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
         3: '',
         4: ''
     });
+
+    const handleReshuffleRemaining = useCallback(() => {
+        if (currentIndex >= queue.length - 1) return;
+        const reviewed = queue.slice(0, currentIndex);
+        const remaining = queue.slice(currentIndex);
+        const reshuffledRemaining = distributeAndShuffleCards(remaining);
+        setQueue([...reviewed, ...reshuffledRemaining]);
+        setRevealedCardId(null);
+    }, [currentIndex, queue]);
+
+    const handleToggleShuffle = useCallback(() => {
+        const next = !shuffleEnabled;
+        setShuffleEnabled(next);
+        localStorage.setItem('lc_recall_shuffle_enabled', String(next));
+        if (currentIndex < queue.length) {
+            const reviewed = queue.slice(0, currentIndex);
+            const remaining = queue.slice(currentIndex);
+            const reordered = prepareQueue(remaining, next);
+            setQueue([...reviewed, ...reordered]);
+            setRevealedCardId(null);
+        }
+    }, [shuffleEnabled, currentIndex, queue]);
+
+    const handleStartCramMode = useCallback(() => {
+        const prepared = prepareQueue(allCards, shuffleEnabled);
+        setQueue(prepared);
+        setCurrentIndex(0);
+        setReviewedCount(0);
+        setRevealedCardId(null);
+    }, [allCards, shuffleEnabled]);
 
     const currentCard = queue[currentIndex];
     const isAnswerRevealed = Boolean(currentCard && revealedCardId === currentCard.id);
@@ -146,15 +199,11 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
                         <Button
                             variant="light"
                             color="ice"
-                            onClick={() => {
-                                setQueue([...allCards]);
-                                setCurrentIndex(0);
-                                setReviewedCount(0);
-                                setRevealedCardId(null);
-                            }}
+                            onClick={handleStartCramMode}
+                            leftSection={<IconArrowsShuffle size={16} />}
                             style={{ fontWeight: 500 }}
                         >
-                            Cram Mode (Review All Cards)
+                            Cram Mode ({shuffleEnabled ? 'Shuffled' : 'Due Order'})
                         </Button>
                     )}
                     <Button variant="default" onClick={onBrowseCards}>
@@ -171,23 +220,62 @@ export function ReviewSession({ allCards, onUpdateCard, onBrowseCards }: ReviewS
         currentCard.difficulty === 'Easy'
             ? 'teal'
             : currentCard.difficulty === 'Hard'
-            ? 'rose'
-            : 'ice';
+                ? 'rose'
+                : 'ice';
 
     return (
         <Box style={{ maxWidth: 780, margin: '24px auto' }}>
             {/* Session Progress Header */}
-            <Group justify="space-between" mb="xs">
-                <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fw={500}>
-                    Card {currentIndex + 1} of {queue.length}
-                </Text>
-                <Badge
-                    variant="outline"
-                    color="gray"
-                    style={{ borderColor: isDark ? '#26353e' : '#cbd5e1', color: isDark ? '#7ea0b7' : '#475569' }}
-                >
-                    Press Space to reveal / 1-4 to rate
-                </Badge>
+            <Group justify="space-between" align="center" mb="xs">
+                <Group gap="xs" align="center">
+                    <Text size="sm" c={isDark ? 'dimmed' : '#64748b'} fw={500}>
+                        Card {currentIndex + 1} of {queue.length}
+                    </Text>
+                    {queue.length - currentIndex > 1 && (
+                        <Tooltip label="Reshuffle remaining cards" withArrow position="top">
+                            <ActionIcon
+                                variant="subtle"
+                                color={isDark ? 'ice' : 'blue'}
+                                size="sm"
+                                onClick={handleReshuffleRemaining}
+                                aria-label="Reshuffle remaining cards"
+                            >
+                                <IconArrowsShuffle size={15} />
+                            </ActionIcon>
+                        </Tooltip>
+                    )}
+                </Group>
+
+                <Group gap="xs" align="center">
+                    <Tooltip
+                        label={
+                            shuffleEnabled
+                                ? "Cards are randomized & topic-distributed. Click to switch to due date order."
+                                : "Cards are ordered by due date. Click to randomize & distribute topics."
+                        }
+                        withArrow
+                        position="top"
+                    >
+                        <Badge
+                            variant={shuffleEnabled ? 'light' : 'outline'}
+                            color={shuffleEnabled ? 'teal' : 'gray'}
+                            size="sm"
+                            style={{ cursor: 'pointer', userSelect: 'none' }}
+                            onClick={handleToggleShuffle}
+                            leftSection={<IconArrowsShuffle size={12} />}
+                        >
+                            {shuffleEnabled ? 'Shuffled' : 'Due Order'}
+                        </Badge>
+                    </Tooltip>
+
+                    <Badge
+                        variant="outline"
+                        color="gray"
+                        style={{ borderColor: isDark ? '#26353e' : '#cbd5e1', color: isDark ? '#7ea0b7' : '#475569' }}
+                    >
+                        Press Space to reveal / 1-4 to rate
+                    </Badge>
+                </Group>
             </Group>
             <Progress value={progressValue} color="ice" size="xs" radius="xl" mb="lg" />
 
