@@ -369,6 +369,22 @@ body,
   border: 1px solid #162329;
 }
 
+/* KaTeX display math formatting */
+.markdown-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 0;
+  margin: 12px 0;
+}
+
+.markdown-body .katex-display::-webkit-scrollbar {
+  height: 4px;
+}
+
+[data-mantine-color-scheme="dark"] .katex-error {
+  color: #fca5a5 !important;
+}
+
 /* Light mode markdown adjustments */
 [data-mantine-color-scheme="light"] .markdown-body h1,
 [data-mantine-color-scheme="light"] .markdown-body h2 {

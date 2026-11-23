@@ -1,6 +1,9 @@
 import React, { type ComponentPropsWithoutRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import { Box, useMantineColorScheme } from '@mantine/core';
 import { CodeBlock } from './CodeBlock';
 
@@ -25,7 +28,8 @@ export function MarkdownRenderer({ content, style, className }: MarkdownRenderer
             }}
         >
             <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[[rehypeKatex, { throwOnError: false }]]}
                 components={{
                     // Intercept fenced code blocks to render with Prism syntax highlighting & copy button
                     pre({ children }: ComponentPropsWithoutRef<'pre'>) {
